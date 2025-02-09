@@ -1,0 +1,202 @@
+@font-face {
+    font-family: "Product Sans";
+    src: url(https://fonts.gstatic.com/s/productsans/v19/pxiDypQkot1TnFhsFMOfGShVF9eO.woff2);
+}
+
+:root {
+    --Minebuns-accent-color: linear-gradient(90deg, rgb(64, 190, 255) 0%, rgb(129, 225, 255) 100%);
+    --button-color: rgb(40, 40, 40, 0.9);
+    --hover-color: rgb(50, 50, 50, 0.9);
+    --panel-bg: rgb(34, 34, 34, 0.85);
+    --panel-bg: rgb(10, 10, 10, 0.85);
+    --text-color: #ffffff;
+    --header-text-size: 25px;
+    --button-text-size: 20px;
+    --setting-text-size: 15px;
+}
+
+.gui-panel {
+    position: fixed;
+    z-index: 1000;
+    width: 200px;
+    border-radius: 8px;
+    background-color: var(--panel-bg);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    font-family: 'Product Sans', sans-serif;
+    color: var(--text-color);
+    overflow: hidden;
+}
+
+.gui-header {
+    background-color: var(--header-bg);
+    height: 40px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--header-text-size);
+    cursor: grab;
+}
+
+.gui-header:active {
+    cursor: grabbing;
+}
+
+.gui-button {
+    height: 35px;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    box-sizing: border-box;
+    cursor: pointer;
+    border-radius: 0;
+    transition: all 0.3s;
+    font-size: var(--button-text-size);
+    font-weight: 200;
+    outline: none;
+    background: var(--button-color);
+    color: var(--text-color);
+}
+
+.gui-button.enabled {
+    background: var(--Minebuns-accent-color);
+}
+
+.gui-button:not(.enabled):hover {
+    background: var(--hover-color);
+}
+
+.gui-background {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 999;
+    height: 100%;
+    width: 100%;
+    backdrop-filter: blur(15px);
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.gui-setting-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--panel-bg);
+    padding: 2px;
+}
+
+.gui-setting-label {
+    font-size: var(--setting-text-size);
+    margin-left: 10px;
+    font-weight: 300;
+    color: var(--text-color);
+}
+
+.gui-checkbox {
+    width: 15px;
+    height: 15px;
+    border-radius: 4px;
+    background: var(--button-color);
+    position: relative;
+    margin: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.gui-checkbox.enabled {
+    background: var(--Minebuns-accent-color);
+}
+
+.gui-color-picker {
+    width: 15px;
+    height: 15px;
+    border-radius: 4px;
+    position: relative;
+    margin: 8px;
+    cursor: pointer;
+}
+
+.gui-color-input {
+    width: 20px;
+    height: 20px;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.gui-button-container {
+    background-color: var(--panel-bg);
+    display: flex;
+    flex-direction: column;
+}
+
+.gui-text-input {
+    background: var(--button-color);
+    border: none;
+    color: var(--text-color);
+    font-family: 'Product Sans', sans-serif;
+    font-size: var(--setting-text-size);
+    width: 40px;
+    border-radius: 4px;
+    outline: none;
+    transition: background 0.3s;
+    text-align: center;
+    margin: 5px;
+    margin-right: 10px;
+}
+
+.gui-text-input:hover {
+    background: var(--hover-color);
+}
+
+.gui-text-input:focus {
+    background: var(--hover-color);
+}
+
+.with-animations .gui-panel {
+    animation: fadeInScale 0.3s ease-out;
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.with-animations .gui-background {
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.with-animations .gui-button {
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.with-animations .gui-button:hover {
+    transform: scale(1.01);
+}
+
+.with-animations .gui-setting-container {
+    will-change: transform, opacity;
+    transform-origin: top;
+    animation: slideDown 0.25s ease-out forwards;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: scaleY(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scaleY(1);
+    }
+}
