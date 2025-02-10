@@ -16,7 +16,7 @@ export default class Fly extends Module {
         if (hooks?.gameWorld?.player?.inputs.jump) {
             hooks.gameWorld.player.velocity.velVec3.y = this.options["Vertical Speed"];
         } else if (hooks?.gameWorld?.player?.inputs.crouch) {
-            hooks.gameWorld.player.velocity.velVec3.y = -this.options["Vertical Speed"];;
+            hooks.gameWorld.player.velocity.velVec3.y = -this.options["Vertical Speed"];
         } else {
             hooks.gameWorld.player.velocity.velVec3.y = 0;
         }
