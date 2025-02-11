@@ -17,6 +17,7 @@ import NoFall from "./modules/movement/NoFall";
 import Speed from "./modules/movement/Speed";
 import FreeHeadcoins from "./modules/misc/FreeHeadcoins";
 import Fill from "./modules/misc/Fill";
+import Chams from "./modules/visual/Chams";
 
 export default {
     modules: {},
@@ -57,7 +58,8 @@ export default {
             new NoFall(),
             new Speed(),
             new FreeHeadcoins(),
-            new Fill()
+            new Fill(),
+            new Chams()
         );
 
         events.on("render", () => {
