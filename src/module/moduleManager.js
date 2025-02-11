@@ -18,6 +18,7 @@ import FreeHeadcoins from "./modules/misc/FreeHeadcoins";
 import Fill from "./modules/misc/Fill";
 import Chams from "./modules/visual/Chams";
 import Triggerbot from "./modules/combat/Triggerbot";
+import FOVChanger from "./modules/visual/FOVChanger";
 
 export default {
     modules: {},
@@ -59,7 +60,8 @@ export default {
             new FreeHeadcoins(),
             new Fill(),
             new Chams(),
-            new Triggerbot()
+            new Triggerbot(),
+            new FOVChanger()
         );
 
         events.on("render", () => {
