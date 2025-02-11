@@ -11,13 +11,13 @@ import Nuker from "./modules/misc/Nuker";
 import Emote from "./modules/misc/Emote";
 import AdBypass from "./modules/misc/AdBypass";
 import Velocity from "./modules/movement/Velocity";
-import NoHitDelay from "./modules/combat/NoHitDelay";
 import Fly from "./modules/movement/Fly";
 import NoFall from "./modules/movement/NoFall";
 import Speed from "./modules/movement/Speed";
 import FreeHeadcoins from "./modules/misc/FreeHeadcoins";
 import Fill from "./modules/misc/Fill";
 import Chams from "./modules/visual/Chams";
+import Triggerbot from "./modules/combat/Triggerbot";
 
 export default {
     modules: {},
@@ -53,13 +53,13 @@ export default {
             new Emote(),
             new AdBypass(),
             new Velocity(),
-            new NoHitDelay(),
             new Fly(),
             new NoFall(),
             new Speed(),
             new FreeHeadcoins(),
             new Fill(),
-            new Chams()
+            new Chams(),
+            new Triggerbot()
         );
 
         events.on("render", () => {

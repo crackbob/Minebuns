@@ -7,16 +7,16 @@ export default class Chams extends Module {
     }
 
     onRender () {
-        hooks.gameWorld.server.players.forEach(child => {
-            child.playerMaterial.depthTest = false;
-            child.playerMaterial.wireframe = true;
+        hooks.gameWorld.server.players.forEach(player => {
+            player.playerMaterial.depthTest = false;
+            player.playerMaterial.wireframe = true;
         });
     }
 
     onDisable () {
-        hooks.gameWorld.server.players.forEach(child => {
-            child.playerMaterial.depthTest = true;
-            child.playerMaterial.wireframe = false;
+        hooks.gameWorld.server.players.forEach(player => {
+            player.playerMaterial.depthTest = true;
+            player.playerMaterial.wireframe = false;
         });
     }
 };
