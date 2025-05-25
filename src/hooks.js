@@ -1,32 +1,15 @@
-import events from "./events";
-
 export default {
-    get gameWorld() {
-        return hooks.importedModules.find(m => m?.["$id"] == "gameState")().gameWorld;
+    init: async function () {
+        let safeImport = (src) => eval(`(async () => { return await import("${src}")})()`);
+        let preloadedModules = Array.from(document.querySelectorAll('link[rel="modulepreload"]')).map(link => link.href);
+        preloadedModules.push(Object.values(document.scripts).find(script => script?.src?.includes(location.origin)).src);
+        let importedModules = await Promise.all(preloadedModules.map(url => safeImport(url)));
+        let allModuleExports = importedModules.flatMap(module => Object.values(module));
+        this.stores = Object.values(allModuleExports).filter(exports => exports?.$id).reduce((acc, exports) => (acc[exports.$id] = exports(), acc), {});
+        this.network = Object.values(allModuleExports).find(m => m?.service);
     },
-    get networkService() {
-        return hooks.importedModules.find(m => m?.service);
-    },
-    "init" () {
-        let fnString = document.querySelector("#app").__vue_app__._context.config.globalProperties.$router.options.routes[0].children[0].component.toString();
-        this.chunks = eval("[" + fnString.split('[')[1].replace(")", "").split(",")).filter(src => src.includes(".js"));
-        let userImport = Object.values(document.scripts).find(script => script?.src?.includes("index")).src.replace("https://minefun.io/", "");
-        this.importedModules = [];
 
-        this.chunks.push(userImport);
-
-        Function(`
-            async function initHooks() {
-                await Promise.all(this.chunks.map(async (src) => {
-                    const module = await import("https://minefun.io/" + src);
-                    Object.values(module).forEach((mod) => {
-                        this.importedModules.push(mod);
-                    });
-                }));
-            }
-            initHooks.chunks = this.chunks;
-            initHooks.importedModules = this.importedModules;
-            return initHooks;
-        `)().bind(this)();
+    get gameWorld () {
+        return this.stores.gameState.gameWorld;
     }
 }

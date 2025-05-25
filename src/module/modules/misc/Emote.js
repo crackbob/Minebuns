@@ -1,6 +1,5 @@
 import Module from "../../module";
 import hooks from "../../../hooks";
-import stores from "../../../utils/stores";
 
 export default class Emote extends Module {
     constructor() {
@@ -11,7 +10,7 @@ export default class Emote extends Module {
     }
 
     onEnable() {
-        stores.roomMgrStore.ws.sendData(77, {
+        hooks.stores.roomState.ws.sendData(77, {
             name: this.options["Emote name"],
             infinity: this.options["Infinity"]
         })

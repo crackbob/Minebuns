@@ -6,7 +6,6 @@ import Watermark from "./modules/visual/Watermark";
 import ClickGUI from "./modules/visual/ClickGUI";
 import Airjump from "./modules/movement/Airjump";
 import Instabreak from "./modules/misc/Instabreak";
-import SpoofBlock from "./modules/misc/SpoofBlock";
 import Nuker from "./modules/misc/Nuker";
 import Emote from "./modules/misc/Emote";
 import AdBypass from "./modules/misc/AdBypass";
@@ -17,7 +16,6 @@ import Speed from "./modules/movement/Speed";
 import FreeHeadcoins from "./modules/misc/FreeHeadcoins";
 import Fill from "./modules/misc/Fill";
 import Chams from "./modules/visual/Chams";
-import Triggerbot from "./modules/combat/Triggerbot";
 import FOVChanger from "./modules/visual/FOVChanger";
 import Scaffold from "./modules/movement/Scaffold";
 import Killaura from "./modules/combat/Killaura";
@@ -51,7 +49,6 @@ export default {
             new ClickGUI(),
             new Airjump(),
             new Instabreak(),
-            new SpoofBlock(),
             new Nuker(),
             new Emote(),
             new AdBypass(),
@@ -62,7 +59,6 @@ export default {
             new FreeHeadcoins(),
             new Fill(),
             new Chams(),
-            new Triggerbot(),
             new FOVChanger(),
             new Scaffold(),
             new Killaura()
