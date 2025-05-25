@@ -20,6 +20,7 @@ import Chams from "./modules/visual/Chams";
 import Triggerbot from "./modules/combat/Triggerbot";
 import FOVChanger from "./modules/visual/FOVChanger";
 import Scaffold from "./modules/movement/Scaffold";
+import Killaura from "./modules/combat/Killaura";
 
 export default {
     modules: {},
@@ -63,7 +64,8 @@ export default {
             new Chams(),
             new Triggerbot(),
             new FOVChanger(),
-            new Scaffold()
+            new Scaffold(),
+            new Killaura()
         );
 
         events.on("render", () => {
