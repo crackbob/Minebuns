@@ -19,6 +19,8 @@ import Chams from "./modules/visual/Chams";
 import FOVChanger from "./modules/visual/FOVChanger";
 import Scaffold from "./modules/movement/Scaffold";
 import Killaura from "./modules/combat/Killaura";
+import GunModifier from "./modules/combat/GunModifier";
+import Disabler from "./modules/misc/Disabler";
 
 export default {
     modules: {},
@@ -61,7 +63,9 @@ export default {
             new Chams(),
             new FOVChanger(),
             new Scaffold(),
-            new Killaura()
+            new Killaura(),
+            new GunModifier(),
+            new Disabler()
         );
 
         events.on("render", () => {
