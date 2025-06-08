@@ -19,6 +19,7 @@ import Killaura from "./modules/combat/Killaura";
 import GunModifier from "./modules/combat/GunModifier";
 import Disabler from "./modules/misc/Disabler";
 import Aimbot from "./modules/combat/Aimbot";
+import NoClip from "./modules/movement/NoClip";
 
 export default {
     modules: {},
@@ -61,7 +62,8 @@ export default {
             new Killaura(),
             new GunModifier(),
             new Disabler(),
-            new Aimbot()
+            new Aimbot(),
+            new NoClip()
         );
 
         events.on("render", () => {
