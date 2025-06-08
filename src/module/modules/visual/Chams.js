@@ -7,6 +7,8 @@ export default class Chams extends Module {
     }
 
     onRender () {
+        if (!hooks?.gameWorld?.player) return;
+        
         hooks.gameWorld.server.players.forEach(player => {
             player.playerMaterial.depthTest = false;
             player.playerMaterial.wireframe = true;

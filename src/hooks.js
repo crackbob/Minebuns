@@ -10,6 +10,6 @@ export default {
     },
 
     get gameWorld () {
-        return this.stores.gameState.gameWorld;
+        return this?.stores?.gameState?.gameWorld || null;
     }
 }

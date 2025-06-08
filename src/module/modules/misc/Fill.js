@@ -13,6 +13,8 @@ export default class Fill extends Module {
     }
 
     onRender() {
+        if (!hooks?.gameWorld?.player) return;
+        
         let radius = this.options["Radius"];
         const interval = this.options["Chunk Interval"];
         const currentTime = Date.now();

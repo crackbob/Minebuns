@@ -7,11 +7,8 @@ import ClickGUI from "./modules/visual/ClickGUI";
 import Airjump from "./modules/movement/Airjump";
 import Instabreak from "./modules/misc/Instabreak";
 import Nuker from "./modules/misc/Nuker";
-import Emote from "./modules/misc/Emote";
 import AdBypass from "./modules/misc/AdBypass";
-import Velocity from "./modules/movement/Velocity";
 import Fly from "./modules/movement/Fly";
-import NoFall from "./modules/movement/NoFall";
 import Speed from "./modules/movement/Speed";
 import FreeHeadcoins from "./modules/misc/FreeHeadcoins";
 import Fill from "./modules/misc/Fill";
@@ -52,11 +49,8 @@ export default {
             new Airjump(),
             new Instabreak(),
             new Nuker(),
-            new Emote(),
             new AdBypass(),
-            new Velocity(),
             new Fly(),
-            new NoFall(),
             new Speed(),
             new FreeHeadcoins(),
             new Fill(),

@@ -8,11 +8,10 @@ export default class Fly extends Module {
         })
     }
 
-    onEnable () {
-        hooks.gameWorld.player.velocity.gravity = 0;
-    }
-
     onRender () {
+        if (!hooks?.gameWorld?.player) return;
+        hooks.gameWorld.player.velocity.gravity = 0;
+
         if (hooks?.gameWorld?.player?.inputs.jump) {
             hooks.gameWorld.player.velocity.velVec3.y = this.options["Vertical Speed"];
         } else if (hooks?.gameWorld?.player?.inputs.crouch) {

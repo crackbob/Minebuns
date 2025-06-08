@@ -5,13 +5,15 @@ import moduleManager from "../../moduleManager";
 export default class Nuker extends Module {
     constructor() {
         super("Nuker", "Misc", {
-            "Radius": 4,
-            "Chunk Interval": 600
+            "Radius": 3,
+            "Chunk Interval": 1000
         });
         this.lastExecutionTime = 0;
     }
 
     onRender() {
+        if (!hooks?.gameWorld?.player) return;
+
         let radius = this.options["Radius"];
         const interval = this.options["Chunk Interval"];
         const currentTime = Date.now();

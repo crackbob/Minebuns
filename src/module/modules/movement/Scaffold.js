@@ -7,6 +7,7 @@ export default class Scaffold extends Module {
     }
 
     onRender () {     
+        if (!hooks?.gameWorld?.player) return;
         let blockPos = Object.values(hooks.gameWorld.player.position).splice(0, 3).map(Math.floor);
         
         blockPos[1]--;
