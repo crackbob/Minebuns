@@ -18,4 +18,8 @@ export default {
     distanceBetweenSqrt(pointA, pointB) {
         return Math.sqrt(this.distanceBetween(pointA, pointB));
     },
+
+    calculateDistance(pos1, pos2) {
+        return Math.hypot(pos2.x - pos1.x, pos2.y - pos1.y, pos2.z - pos1.z);
+    }
 };

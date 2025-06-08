@@ -18,6 +18,7 @@ import Scaffold from "./modules/movement/Scaffold";
 import Killaura from "./modules/combat/Killaura";
 import GunModifier from "./modules/combat/GunModifier";
 import Disabler from "./modules/misc/Disabler";
+import Aimbot from "./modules/combat/Aimbot";
 
 export default {
     modules: {},
@@ -59,7 +60,8 @@ export default {
             new Scaffold(),
             new Killaura(),
             new GunModifier(),
-            new Disabler()
+            new Disabler(),
+            new Aimbot()
         );
 
         events.on("render", () => {
