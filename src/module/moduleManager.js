@@ -20,6 +20,7 @@ import GunModifier from "./modules/combat/GunModifier";
 import Disabler from "./modules/misc/Disabler";
 import Aimbot from "./modules/combat/Aimbot";
 import NoClip from "./modules/movement/NoClip";
+import Timer from "./modules/misc/Timer";
 
 export default {
     modules: {},
@@ -63,7 +64,8 @@ export default {
             new GunModifier(),
             new Disabler(),
             new Aimbot(),
-            new NoClip()
+            new NoClip(),
+            new Timer()
         );
 
         events.on("render", () => {
