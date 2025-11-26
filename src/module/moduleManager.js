@@ -17,18 +17,21 @@ import FOVChanger from "./modules/visual/FOVChanger";
 import Scaffold from "./modules/movement/Scaffold";
 import Killaura from "./modules/combat/Killaura";
 import GunModifier from "./modules/combat/GunModifier";
-import Disabler from "./modules/misc/Disabler";
 import Aimbot from "./modules/combat/Aimbot";
 import NoClip from "./modules/movement/NoClip";
 import Timer from "./modules/misc/Timer";
-import NoFall from "./modules/misc/NoFall";
+import NoFall from "./modules/movement/NoFall";
 import HighJump from "./modules/movement/HighJump";
 import NoHunger from "./modules/misc/NoHunger";
+import NoDrown from "./modules/misc/NoDrown";
 
 export default {
     modules: {},
     addModules: function (...modules) {
-        for(const module of modules) this.modules[module.name] = module;
+        for(const module of modules) {
+            let moduleInstance = new module;
+            this.modules[moduleInstance.name] = moduleInstance;
+        }
     },
     addModule: function (module) {
         this.modules[module.name] = module;
@@ -49,29 +52,29 @@ export default {
 
     init () {
         this.addModules(
-            new ArrayList(),
-            new Watermark(),
-            new ClickGUI(),
-            new Airjump(),
-            new Instabreak(),
-            new Nuker(),
-            new AdBypass(),
-            new Fly(),
-            new Speed(),
-            new FreeHeadcoins(),
-            new Fill(),
-            new Chams(),
-            new FOVChanger(),
-            new Scaffold(),
-            new Killaura(),
-            new GunModifier(),
-            new Disabler(),
-            new Aimbot(),
-            new NoClip(),
-            new Timer(),
-            new NoFall(),
-            new HighJump(),
-            new NoHunger()
+            ArrayList,
+            Watermark,
+            ClickGUI,
+            Airjump,
+            Instabreak,
+            Nuker,
+            AdBypass,
+            Fly,
+            Speed,
+            FreeHeadcoins,
+            Fill,
+            Chams,
+            FOVChanger,
+            Scaffold,
+            Killaura,
+            GunModifier,
+            Aimbot,
+            NoClip,
+            Timer,
+            NoFall,
+            HighJump,
+            NoHunger,
+            NoDrown
         );
 
         events.on("render", () => {

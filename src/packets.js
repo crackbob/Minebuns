@@ -3,14 +3,18 @@ import hooks from "./hooks";
 
 export default {
     toServer: {
-        TIME_STEP_INFO: 1
+        TIME_STEP_INFO: 1,
+        GOT_DAMAGE: 27
     },
 
     listeners: {},
 
     packetListener (packetID, data) {
         Object.values(this.listeners).forEach(listener => {
-            listener(packetID, data);
+            let result = listener(packetID, data);
+            if (result !== null && result !== undefined) {
+                data = result;
+            }
         });
         hooks.gameWorld.server.msgsToSend.push(packetID, data);
     },
