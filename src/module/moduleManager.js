@@ -21,6 +21,8 @@ import Disabler from "./modules/misc/Disabler";
 import Aimbot from "./modules/combat/Aimbot";
 import NoClip from "./modules/movement/NoClip";
 import Timer from "./modules/misc/Timer";
+import NoFall from "./modules/misc/NoFall";
+import HighJump from "./modules/movement/HighJump";
 
 export default {
     modules: {},
@@ -65,7 +67,9 @@ export default {
             new Disabler(),
             new Aimbot(),
             new NoClip(),
-            new Timer()
+            new Timer(),
+            new NoFall(),
+            new HighJump()
         );
 
         events.on("render", () => {

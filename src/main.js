@@ -18,10 +18,10 @@ class Minebuns {
             events.emit("keydown", e.code);
         });
 
-        hooks.init();
         moduleManager.init();
 
         window.hooks = hooks;
+        window.minebuns = this;
     }
 
     disable () {
