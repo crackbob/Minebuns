@@ -1,6 +1,7 @@
 import moduleManager from "./module/moduleManager";
 import events from "./events";
 import hooks from "./hooks"
+import packets from "./packets";
 
 class Minebuns {
     constructor() {
@@ -9,7 +10,6 @@ class Minebuns {
     }
 
     init () {
-            
         setInterval(() => {
             events.emit("render");
         }, (1000 / 60));
@@ -19,9 +19,11 @@ class Minebuns {
         });
 
         moduleManager.init();
+        packets.init();
 
-        window.hooks = hooks;
-        window.minebuns = this;
+        this.packets = packets;
+        this.moduleManager = moduleManager;
+        this.hooks = hooks;
     }
 
     disable () {
@@ -29,4 +31,4 @@ class Minebuns {
     }
 };
 
-export default new Minebuns();
+window.minebuns = new Minebuns();

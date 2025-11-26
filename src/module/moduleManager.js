@@ -23,6 +23,7 @@ import NoClip from "./modules/movement/NoClip";
 import Timer from "./modules/misc/Timer";
 import NoFall from "./modules/misc/NoFall";
 import HighJump from "./modules/movement/HighJump";
+import NoHunger from "./modules/misc/NoHunger";
 
 export default {
     modules: {},
@@ -69,7 +70,8 @@ export default {
             new NoClip(),
             new Timer(),
             new NoFall(),
-            new HighJump()
+            new HighJump(),
+            new NoHunger()
         );
 
         events.on("render", () => {

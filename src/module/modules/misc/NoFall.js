@@ -7,8 +7,8 @@ export default class NoFall extends Module {
         super("NoFall", "Movement", null);
     }
 
-    onRender() {
-        hooks.gameWorld.server.sendData = function (packetID, data) {
+    onEnable() {
+        packets.listeners["NoFall"] = function (packetID, data) {
             if (packetID == packets.toServer.TIME_STEP_INFO) {
                 if (data.lp) {
                     let yVel = data.lp[3];
@@ -17,13 +17,10 @@ export default class NoFall extends Module {
                     if (yVel == 0) data.lp[3] = -0.01;
                 }
             }
-            this.msgsToSend.push(packetID, data);
         }
     }
 
     onDisable() {
-        hooks.gameWorld.server.sendData = function (packetID, data) {
-            this.msgsToSend.push(packetID, data);
-        }
+        delete packets.listeners["NoFall"];
     }
 }
