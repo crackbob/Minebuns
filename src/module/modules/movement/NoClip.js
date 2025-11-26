@@ -21,6 +21,6 @@ export default class NoClip extends Module {
     }
 
     onDisable() {
-        this.playerPhysicsSystem.resolveBlockCollision = () => this._og;
+        this.playerPhysicsSystem.resolveBlockCollision = this._og;
     }
 }
