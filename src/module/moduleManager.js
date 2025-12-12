@@ -24,6 +24,7 @@ import NoFall from "./modules/movement/NoFall";
 import HighJump from "./modules/movement/HighJump";
 import NoHunger from "./modules/misc/NoHunger";
 import NoDrown from "./modules/misc/NoDrown";
+import GroundSpeed from "./modules/movement/GroundSpeed";
 
 export default {
     modules: {},
@@ -61,6 +62,7 @@ export default {
             AdBypass,
             Fly,
             Speed,
+            GroundSpeed,
             FreeHeadcoins,
             Fill,
             Chams,
