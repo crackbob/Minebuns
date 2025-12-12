@@ -7,11 +7,11 @@ export default class AdBypass extends Module {
     }
 
     onEnable() {
-        this._reward = this._reward || hooks.stores.adsStore.rewardCommercialVideoWrapper;
-        hooks.stores.adsStore.rewardCommercialVideoWrapper = () => true;
+        this._reward = this._reward || hooks.stores.get("adsStore").rewardCommercialVideoWrapper;
+        hooks.stores.get("adsStore").rewardCommercialVideoWrapper = () => true;
     }
 
     onDisable() {
-        hooks.stores.adsStore.rewardCommercialVideoWrapper = () => this._reward;
+        hooks.stores.get("adsStore").rewardCommercialVideoWrapper = () => this._reward;
     }
 }

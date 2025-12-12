@@ -14,7 +14,7 @@ export default class GunModifier extends Module {
     }
 
     get gunSystem () {
-        return hooks.stores.gameState.gameWorld.systemsManager.activeSystems.find(system => system?.bulletsSystem);
+        return hooks.gameWorld.systemsManager.activeSystems.find(system => system?.bulletsSystem);
     }
 
     onEnable() {

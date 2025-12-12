@@ -9,7 +9,7 @@ export default class FreeHeadcoins extends Module {
 
     async onEnable () {
         let resp = await hooks.network.get("users/freeSpinner");
-        hooks.stores.userState.user.balance.headcoins += resp.data.amount;
+        hooks.stores.get("userState").user.balance.headcoins += resp.data.amount;
         moduleManager.modules["FreeHeadcoins"].disable();
     }
 }

@@ -4,7 +4,12 @@ import hooks from "./hooks";
 export default {
     toServer: {
         TIME_STEP_INFO: 1,
-        GOT_DAMAGE: 27
+        REQUEST_RESPAWN: 4,
+        GOT_DAMAGE: 27,
+        PARKOUR_REQUEST_RESPAWN: 1004,
+        ONE_BLOCK_REQUEST_RESPAWN: 1552,
+        BED_WARS_REQUEST_RESPAWN: 1600,
+        SANDBOX_REQUEST_RESPAWN: 1700,
     },
 
     listeners: {},

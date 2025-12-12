@@ -30,9 +30,8 @@ export default class Aimbot extends Module {
     }
     
     aimAtEnemy() {
-        let gameState = hooks.stores.gameState;
-        let player = gameState.gameWorld.player;
-        let enemies = gameState.gameWorld.server.players;
+        let player = hooks.gameWorld.player;
+        let enemies = hooks.gameWorld.server.players;
     
         if (!player || !enemies) return;
     
@@ -63,11 +62,11 @@ export default class Aimbot extends Module {
     }
     
     onRender () {
-        if (!hooks?.stores?.gameState?.gameWorld?.server) return;
+        if (!hooks?.gameWorld?.server) return;
 
-        if (this.options["On Aim"] == "true" && hooks.stores.gameState.gameWorld.player.inputs.rightMB) {
+        if (this.options["On Aim"] == "true" && hooks.gameWorld.player.inputs.rightMB) {
             this.aimAtEnemy();
-        } else if (this.options["On Shoot"] == "true" && hooks.stores.gameState.gameWorld.player.inputs.leftMB) {
+        } else if (this.options["On Shoot"] == "true" && hooks.gameWorld.player.inputs.leftMB) {
             this.aimAtEnemy();
         } else if (this.options["On Shoot"] !== "true" && this.options["On Aim"] !== "true") {
             this.aimAtEnemy();

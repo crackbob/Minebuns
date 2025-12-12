@@ -25,6 +25,8 @@ import HighJump from "./modules/movement/HighJump";
 import NoHunger from "./modules/misc/NoHunger";
 import NoDrown from "./modules/misc/NoDrown";
 import GroundSpeed from "./modules/movement/GroundSpeed";
+import InstantRespawn from "./modules/misc/InstantRespawn";
+import ShopAnywhere from "./modules/misc/ShopAnywhere";
 
 export default {
     modules: {},
@@ -76,7 +78,9 @@ export default {
             NoFall,
             HighJump,
             NoHunger,
-            NoDrown
+            NoDrown,
+            InstantRespawn,
+            ShopAnywhere
         );
 
         events.on("render", () => {

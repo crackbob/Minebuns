@@ -12,7 +12,7 @@ export default class Timer extends Module {
     onEnable() {
         if (this.interval) clearInterval(this.interval);
         this.interval = setInterval(() => {
-            const time = hooks.stores.gameState.gameWorld.time;
+            const time = hooks.gameWorld.time;
             time.elapsedTimeMs += 20 * this.options.Multiplier;
         }, 20);
     }
