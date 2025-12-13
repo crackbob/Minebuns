@@ -27,6 +27,7 @@ import NoDrown from "./modules/misc/NoDrown";
 import GroundSpeed from "./modules/movement/GroundSpeed";
 import InstantRespawn from "./modules/misc/InstantRespawn";
 import ShopAnywhere from "./modules/misc/ShopAnywhere";
+import SelfHarm from "./modules/misc/SelfHarm";
 
 export default {
     modules: {},
@@ -80,7 +81,8 @@ export default {
             NoHunger,
             NoDrown,
             InstantRespawn,
-            ShopAnywhere
+            ShopAnywhere,
+            SelfHarm
         );
 
         events.on("render", () => {

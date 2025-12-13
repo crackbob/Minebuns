@@ -11,7 +11,7 @@ export default class ShopAnywhere extends Module {
     }
 
     onRender() {
-        if (!hooks?.gameWorld?.player && !this?.npcSystem?.isPlayerInShoppingZone) return;
+        if (!this?.npcSystem?.isPlayerInShoppingZone) return;
 
         this._og = this._og || this.npcSystem.isPlayerInShoppingZone;
 
