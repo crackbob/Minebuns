@@ -21,5 +21,9 @@ export default {
 
     calculateDistance(pos1, pos2) {
         return Math.hypot(pos2.x - pos1.x, pos2.y - pos1.y, pos2.z - pos1.z);
+    },
+
+    calculateDistanceArr(pos1, pos2) {
+        return Math.hypot(pos2[0] - pos1[0], pos2[1] - pos1[1], pos2[2] - pos1[2]);
     }
 };

@@ -28,6 +28,9 @@ import GroundSpeed from "./modules/movement/GroundSpeed";
 import InstantRespawn from "./modules/misc/InstantRespawn";
 import ShopAnywhere from "./modules/misc/ShopAnywhere";
 import SelfHarm from "./modules/misc/SelfHarm";
+//import Dupe from "./modules/misc/Dupe";
+import BlockFinder from "./modules/misc/BlockFinder";
+import Spider from "./modules/movement/Spider.js";
 
 export default {
     modules: {},
@@ -82,7 +85,10 @@ export default {
             NoDrown,
             InstantRespawn,
             ShopAnywhere,
-            SelfHarm
+            SelfHarm,
+            //Dupe,
+            BlockFinder,
+            Spider
         );
 
         events.on("render", () => {
