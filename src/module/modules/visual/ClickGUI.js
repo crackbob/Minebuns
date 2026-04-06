@@ -2,7 +2,16 @@ import Module from "../../module.js";
 import moduleManager from "../../moduleManager.js";
 import events from "../../../events";
 import Panel from "./components/Panel.js";
-import "./styles/clickgui.css";
+
+import styles from "./styles/clickgui.css";
+
+function injectCSS(css) {
+    const style = document.createElement("style");
+    style.textContent = css;
+    document.head.appendChild(style);
+}
+
+injectCSS(styles);
 
 export default class ClickGUI extends Module {
     constructor() {

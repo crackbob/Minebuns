@@ -1,35 +1,13 @@
 {
 	"name": "Minebuns",
 	"version": "1.0.0",
-	"description": "Utility tool for Vectaria.io",
-	"main": "src/Minebuns.js",
+	"description": "Minebuns",
+	"main": "src/index.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
-		"build": "webpack",
-		"watch": "webpack --watch"
-	},
-	"repository": {
-		"type": "git",
-		"url": ""
-	},
-	"keywords": [],
-	"author": "wang",
-	"license": "MIT",
-	"bugs": {
-		"url": ""
-	},
-	"homepage": "https://github.com/crackbob/Minebuns",
-	"supportURL": "https://github.com/crackbob/Minebuns",
-	"devDependencies": {
-		"@babel/core": "^7.26.0",
-		"@babel/preset-env": "^7.26.0",
-		"babel-loader": "^9.2.1",
-		"css-loader": "^7.1.2",
-		"style-loader": "^4.0.0",
-		"webpack": "^5.97.1",
-		"webpack-cli": "^6.0.1"
+		"build": "node build.js",
+		"watch": "node build.js --watch"
 	},
 	"dependencies": {
-		"webpack-userscript": "^3.2.3"
+		"esbuild": "^0.28.0"
 	}
 }
