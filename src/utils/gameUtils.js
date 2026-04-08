@@ -38,5 +38,15 @@ export default {
                 }
             }
         }
+    },
+
+    openOtherItem (id) {
+        const position = Object.values(hooks.gameWorld.player.position).map(Math.floor);
+        const sys = hooks.gameWorld.systemsManager.activeSystems.find(sys => sys?.openOtherItem);
+        hooks.stores.get("inventoryState").setBackpackStates(0);
+
+        setTimeout(() => {
+            sys.openOtherItem(position, id);
+        }, 100)
     }
 }

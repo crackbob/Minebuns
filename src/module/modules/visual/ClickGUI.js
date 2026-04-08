@@ -89,7 +89,8 @@ export default class ClickGUI extends Module {
             { title: "Combat", position: { top: "100px", left: "100px" } },
             { title: "Movement", position: { top: "100px", left: "320px" } },
             { title: "Visual", position: { top: "100px", left: "540px" } },
-            { title: "Misc", position: { top: "100px", left: "760px" } }
+            { title: "Misc", position: { top: "100px", left: "760px" } },
+            { title: "Menus", position: { top: "100px", left: "1000px" } }
         ];
 
         this.panels.forEach(panel => {
@@ -136,7 +137,7 @@ export default class ClickGUI extends Module {
         this.blurredBackground.style.display = "block";
     }
 
-    onDisable() {
+    onDisable(clickCanvas = true) {
         this.panels.forEach(panel => panel.hide());
         this.blurredBackground.style.display = "none";
 
@@ -152,7 +153,7 @@ export default class ClickGUI extends Module {
         this.fixCanvas();
 
         const gameCanvas = document.querySelector("#game");
-        if (gameCanvas) gameCanvas.click();
+        if (clickCanvas && gameCanvas) gameCanvas.click();
     }
 
     onSettingUpdate() {

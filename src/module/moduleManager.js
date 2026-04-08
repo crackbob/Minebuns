@@ -33,6 +33,9 @@ import BlockFinder from "./modules/misc/BlockFinder";
 import Spider from "./modules/movement/Spider.js";
 import Freecam from "./modules/visual/Freecam.js";
 import AirPlace from "./modules/misc/AirPlace.js";
+import Crafting from "./modules/menus/Crafting.js";
+import DyeingTable from "./modules/menus/DyeingTable.js";
+import CuttingTable from "./modules/menus/CuttingTable.js";
 
 export default {
     modules: {},
@@ -92,7 +95,11 @@ export default {
             BlockFinder,
             Spider,
             Freecam,
-            AirPlace
+            AirPlace,
+
+            Crafting,
+            DyeingTable,
+            CuttingTable
         );
 
         events.on("render", () => {
