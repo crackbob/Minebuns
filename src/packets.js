@@ -12,6 +12,11 @@ export default {
         SANDBOX_REQUEST_RESPAWN: 1700,
     },
 
+    toClient: {
+        SET_WALK_MODE: 41,
+        SET_INVISIBLE_MODE: 42
+    },
+
     listeners: {},
 
     packetListener (packetID, data) {

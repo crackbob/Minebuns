@@ -31,6 +31,7 @@ import SelfHarm from "./modules/misc/SelfHarm";
 import Dupe from "./modules/misc/Dupe";
 import BlockFinder from "./modules/misc/BlockFinder";
 import Spider from "./modules/movement/Spider.js";
+import Freecam from "./modules/visual/Freecam.js";
 
 export default {
     modules: {},
@@ -88,7 +89,8 @@ export default {
             SelfHarm,
             Dupe,
             BlockFinder,
-            Spider
+            Spider,
+            Freecam
         );
 
         events.on("render", () => {
