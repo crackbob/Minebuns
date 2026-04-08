@@ -32,6 +32,7 @@ import Dupe from "./modules/misc/Dupe";
 import BlockFinder from "./modules/misc/BlockFinder";
 import Spider from "./modules/movement/Spider.js";
 import Freecam from "./modules/visual/Freecam.js";
+import AirPlace from "./modules/misc/AirPlace.js";
 
 export default {
     modules: {},
@@ -90,7 +91,8 @@ export default {
             Dupe,
             BlockFinder,
             Spider,
-            Freecam
+            Freecam,
+            AirPlace
         );
 
         events.on("render", () => {

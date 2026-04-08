@@ -4,6 +4,7 @@ import events from "../../../events";
 import Panel from "./components/Panel.js";
 
 import styles from "./styles/clickgui.css";
+import gameUtils from "../../../utils/gameUtils.js";
 
 function injectCSS(css) {
     const style = document.createElement("style");
@@ -62,6 +63,18 @@ export default class ClickGUI extends Module {
         } else {
             this.showGUI();
             this.updateAnimations();
+        }
+
+        const cssRule = gameUtils.getCssRule('.pause-cont');
+        if (cssRule) cssRule.style.display = "none";
+
+        this.fixCanvas();
+    }
+
+    fixCanvas () {
+        const gameCanvas = document.querySelector("#game");
+        if (gameCanvas) {
+            game.dispatchEvent(new Event('resize', { bubbles: true }));
         }
     }
 
@@ -126,6 +139,20 @@ export default class ClickGUI extends Module {
     onDisable() {
         this.panels.forEach(panel => panel.hide());
         this.blurredBackground.style.display = "none";
+
+        const cssRule = gameUtils.getCssRule('.pause-cont');
+
+        // fix css rule
+        if (cssRule) cssRule.style.display = "";
+
+        // remove the instance
+        const pauseScreen = document.getElementsByClassName("pause-cont")[0];
+        if (pauseScreen) pauseScreen.style.display = "none";
+
+        this.fixCanvas();
+
+        const gameCanvas = document.querySelector("#game");
+        if (gameCanvas) gameCanvas.click();
     }
 
     onSettingUpdate() {

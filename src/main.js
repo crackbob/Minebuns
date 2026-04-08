@@ -31,4 +31,14 @@ class Minebuns {
     }
 };
 
-window.minebuns = new Minebuns();
+function init () {
+    window.minebuns = new Minebuns();
+}
+
+if (document.readyState === "complete" || document.readyState === "interactive") {
+    init();
+} else {
+    document.addEventListener("DOMContentLoaded", () => {
+        setTimeout(init, 1000);
+    });
+}

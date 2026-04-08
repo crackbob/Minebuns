@@ -28,5 +28,15 @@ export default {
           g: parseInt(result[2], 16),
           b: parseInt(result[3], 16)
         } : null;
+    },
+
+    getCssRule(selector) {
+        for (const sheet of document.styleSheets) {
+            for (const rule of sheet.cssRules || []) {
+                if (rule.selectorText?.includes(selector)) {
+                    return rule;
+                }
+            }
+        }
     }
 }
