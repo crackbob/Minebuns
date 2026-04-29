@@ -5,34 +5,80 @@ import moduleManager from "../../moduleManager";
 export default class Nuker extends Module {
     constructor() {
         super("Nuker", "Misc", {
-            "Radius": 3,
-            "Chunk Interval": 1000
+            "Radius": 4,
+            "Delay": 120,
+            "Target Selected Block": false,
+            "Auto Disable": false
         });
-        this.lastExecutionTime = 0;
+        this.blockIndex = 0;
     }
 
-    onRender() {
-        if (!hooks?.gameWorld?.player) return;
+    get selectedBlock () {
+        return hooks.gameWorld?.systemsManager.activeExecuteSystems.find(sys => sys?.currBlockPos !== undefined) || undefined;
+    }
 
+    onDisable() {
+        this.blockIndex = 0;
+    }
+
+    onEnable() {
+        this.blockIndex = 0;
         let radius = this.options["Radius"];
-        const interval = this.options["Chunk Interval"];
-        const currentTime = Date.now();
+        let blockUnderPlayer = Object.values(hooks.gameWorld.player.position).map(Math.floor);
+        blockUnderPlayer[1]--;
 
-        if (currentTime - this.lastExecutionTime >= interval) {
-            this.lastExecutionTime = currentTime;
+        if (this.options["Target Selected Block"] && this.selectedBlock) {
+            blockUnderPlayer = [...this.selectedBlock.currBlockPos];
+        }
 
-            let blockPos = Object.values(hooks.gameWorld.player.position).splice(0, 3).map(Math.floor);
+        let dx = -radius, dy = -radius, dz = -radius;
+        let blocks = [];
+        
+        while (dx <= radius) {
+            while (dy <= radius) {
+                while (dz <= radius) {
+                    if (Math.sqrt(dx * dx + dy * dy + dz * dz) <= radius) {
+                        let blockPos = [blockUnderPlayer[0] + dx, blockUnderPlayer[1] + dy, blockUnderPlayer[2] + dz];
+                        let blockID = hooks.gameWorld.chunkManager.getBlock(...blockPos);
 
-            for (let x = -radius; x <= radius; x++) {
-                for (let y = -radius; y <= radius; y++) {
-                    for (let z = -radius; z <= radius; z++) {
-                        const [cx, cy, cz] = [blockPos[0] + x, blockPos[1] + y, blockPos[2] + z];
-                        if (hooks.gameWorld.chunkManager.getBlock(cx, cy, cz) !== 0) {
-                            hooks.gameWorld.chunkManager.setBlock(cx, cy, cz, 0, true, true);
+                        if (blockID !== 0) {
+                            blocks.push(blockPos);
                         }
                     }
+                    dz++;
+                }
+                dz = -radius;
+                dy++;
+            }
+            dy = -radius;
+            dx++;
+        }
+        
+        let context = this;
+        let options = this.options;
+
+        function breakNextBlock() {
+            if (!context.isEnabled) return;
+
+            if (context.blockIndex < blocks.length) {
+                const [newX, newY, newZ] = blocks[context.blockIndex];
+                setTimeout(() => {
+                    if (!context.isEnabled) return;
+
+                    hooks.gameWorld.chunkManager.setBlock(newX, newY, newZ, 0, true);
+                    context.blockIndex++;
+                    breakNextBlock();
+                }, options["Delay"]);
+            } else {
+                context.blockIndex = 0;
+                if (options["Auto Disable"]) {
+                    context.disable();
+                } else {
+                    if (context.isEnabled) context.onEnable();
                 }
             }
         }
+
+        breakNextBlock();
     }
 }
