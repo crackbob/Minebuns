@@ -36,6 +36,7 @@ import AirPlace from "./modules/misc/AirPlace.js";
 import Crafting from "./modules/menus/Crafting.js";
 import DyeingTable from "./modules/menus/DyeingTable.js";
 import CuttingTable from "./modules/menus/CuttingTable.js";
+import Xray from "./modules/visual/Xray.js";
 
 export default {
     modules: {},
@@ -96,6 +97,7 @@ export default {
             Spider,
             Freecam,
             AirPlace,
+            Xray,
 
             Crafting,
             DyeingTable,
