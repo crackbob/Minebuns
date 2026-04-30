@@ -158,6 +158,10 @@ export default class ModuleSettings {
             events.emit("setting.update", this.module);
         });
 
+        colorPickerBg.addEventListener("click", () => {
+            colorPicker.click();
+        });
+
         container.appendChild(label);
         container.appendChild(colorPickerBg);
         this.container.appendChild(container);

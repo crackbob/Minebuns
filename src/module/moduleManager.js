@@ -13,14 +13,12 @@ import Speed from "./modules/movement/Speed";
 import FreeHeadcoins from "./modules/misc/FreeHeadcoins";
 import Fill from "./modules/misc/Fill";
 import Chams from "./modules/visual/Chams";
-import FOVChanger from "./modules/visual/FOVChanger";
 import Scaffold from "./modules/movement/Scaffold";
 import Killaura from "./modules/combat/Killaura";
 import GunModifier from "./modules/combat/GunModifier";
 import Aimbot from "./modules/combat/Aimbot";
 import NoClip from "./modules/movement/NoClip";
 import Timer from "./modules/misc/Timer";
-import NoFall from "./modules/movement/NoFall";
 import HighJump from "./modules/movement/HighJump";
 import NoHunger from "./modules/misc/NoHunger";
 import NoDrown from "./modules/misc/NoDrown";
@@ -28,7 +26,6 @@ import GroundSpeed from "./modules/movement/GroundSpeed";
 import InstantRespawn from "./modules/misc/InstantRespawn";
 import ShopAnywhere from "./modules/misc/ShopAnywhere";
 import SelfHarm from "./modules/misc/SelfHarm";
-import Dupe from "./modules/misc/Dupe";
 import BlockFinder from "./modules/misc/BlockFinder";
 import Spider from "./modules/movement/Spider.js";
 import Freecam from "./modules/visual/Freecam.js";
@@ -37,6 +34,8 @@ import Crafting from "./modules/menus/Crafting.js";
 import DyeingTable from "./modules/menus/DyeingTable.js";
 import CuttingTable from "./modules/menus/CuttingTable.js";
 import Xray from "./modules/visual/Xray.js";
+import Interface from "./modules/visual/Interface.js";
+import BlockOutline from "./modules/visual/BlockOutline.js";
 
 export default {
     modules: {},
@@ -78,26 +77,25 @@ export default {
             FreeHeadcoins,
             Fill,
             Chams,
-            FOVChanger,
             Scaffold,
             Killaura,
             GunModifier,
             Aimbot,
             NoClip,
             Timer,
-            NoFall,
             HighJump,
             NoHunger,
             NoDrown,
             InstantRespawn,
             ShopAnywhere,
             SelfHarm,
-            Dupe,
             BlockFinder,
             Spider,
             Freecam,
             AirPlace,
             Xray,
+            Interface,
+            BlockOutline,
 
             Crafting,
             DyeingTable,
@@ -124,5 +122,6 @@ export default {
         
         this.modules["Arraylist"].enable();
         this.modules["Watermark"].enable();
+        this.modules["Interface"].enable();
     }
 };

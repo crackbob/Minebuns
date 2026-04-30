@@ -30,6 +30,14 @@ export default {
         } : null;
     },
 
+    rgbToUnit(rgb) {
+        return {
+            r: rgb.r / 255,
+            g: rgb.g / 255,
+            b: rgb.b / 255
+        };
+    },
+
     getCssRule(selector) {
         for (const sheet of document.styleSheets) {
             for (const rule of sheet.cssRules || []) {
