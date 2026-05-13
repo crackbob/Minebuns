@@ -8,209 +8,209 @@
 // @grant        none
 // ==/UserScript==
 
-(()=>{var c={listeners:{},activeKeys:new Set,on:function(r,e){this.listeners[r]||(this.listeners[r]=[]),this.listeners[r].push(e)},remove:function(r,e){this.listeners[r]&&(this.listeners[r]=this.listeners[r].filter(t=>t!==e))},emit:function(r,e){this.listeners[r]&&this.listeners[r].forEach(t=>t(e))},trackKey:function(r,e,t){r==="keydown"&&moduleManager.handleKeyPress(t),r==="keydown"&&!this.activeKeys.has(e)&&(this.activeKeys.add(e),this.emit("keyPress",{key:e,code:t})),r==="keyup"&&this.activeKeys.has(e)&&(this.activeKeys.delete(e),this.emit("keyRelease",{key:e,code:t}))}};var a=class{constructor(e,t,i,s){this.name=e,this.category=t,this.options=i,this.keybind=s,this.waitingForBind=!1,this.isEnabled=!1,this.toggle=this.toggle.bind(this)}onEnable(){}onDisable(){}onRender(){}onSettingUpdate(){}enable(){this.isEnabled=!0,c.emit("module.update",this),this.onEnable()}disable(){this.isEnabled=!1,c.emit("module.update",this),this.onDisable()}toggle(){this.isEnabled?this.disable():this.enable()}};var v=class extends a{constructor(){super("Arraylist","Visual"),this.namesMap={},this.arraylistContainer=null,this.initialized=!1}update(e,t){if(t){if(!this.namesMap[e]){let s=document.createElement("div");s.style.backgroundColor="rgba(10, 10, 10, 0.7)",s.style.color="white",s.style.padding="2px 10px 2px 10px",s.style.display="flex",s.style.alignItems="center",s.style.boxSizing="border-box",s.style.margin="0",s.style.fontFamily="'Product Sans', sans-serif",s.style.boxShadow="rgb(0, 0, 0, 0.05) -5px 1px",s.style.transition="max-height 0.2s ease-in-out, opacity 0.2s ease-in-out",s.style.overflow="hidden",s.style.maxHeight="0",s.style.opacity="0";let n=document.createElement("span");n.style.fontWeight="800",n.style.fontSize="16px",n.style.backgroundImage="var(--Minebuns-accent-color)",n.style.color="transparent",n.style.backgroundClip="text",n.innerHTML=e,s.appendChild(n),this.arraylistContainer.appendChild(s),setTimeout(()=>{s.style.maxHeight="50px",s.style.opacity="1"},1),this.namesMap[e]=s}}else if(this.namesMap[e]){let s=this.namesMap[e];s.style.maxHeight="0",s.style.opacity="0",setTimeout(()=>{this.arraylistContainer.removeChild(s),delete this.namesMap[e]},5)}let i=Object.values(this.namesMap).sort((s,n)=>this.measureElementWidth(n)-this.measureElementWidth(s));this.arraylistContainer.innerHTML="",i.forEach(s=>{this.arraylistContainer.appendChild(s)})}onEnable(){this.initialized?this.arraylistContainer.style.opacity="1":(this.arraylistContainer=document.createElement("div"),this.arraylistContainer.style.flexDirection="column",this.arraylistContainer.style.position="absolute",this.arraylistContainer.style.zIndex="1000",this.arraylistContainer.style.display="flex",this.arraylistContainer.style.right="5px",this.arraylistContainer.style.top="5px",this.arraylistContainer.style.alignItems="flex-end",this.arraylistContainer.style.pointerEvents="none",this.arraylistContainer.style.textTransform="lowercase",this.arraylistContainer.style.border="2px solid transparent",this.arraylistContainer.style.borderImage="var(--Minebuns-accent-color)",this.arraylistContainer.style.borderImageSlice="1",this.arraylistContainer.style.borderBottom="0",this.arraylistContainer.style.borderLeft="0",document.body.appendChild(this.arraylistContainer),c.on("module.update",e=>{this.update(e.name,e.isEnabled)}),this.initialized=!0)}measureElementWidth(e){return e.getBoundingClientRect().width}onDisable(){this.arraylistContainer.style.opacity="0"}};var o={get stores(){if(this._stores)return this._stores;{let r=app._vnode.component.appContext.provides,e=r[Object.getOwnPropertySymbols(r).find(t=>r[t]._s)];return this._stores=e._s}},get gameWorld(){return this.stores.get("gameState").gameWorld}};var k=class extends a{constructor(){super("Watermark","Visual",{Text:"Minebuns"})}onSettingUpdate(){let e=document.querySelector(".Minebuns-overlay-title");e&&(e.textContent=this.options.Text)}onEnable(){let e=document.querySelector(".Minebuns-overlay-title");e||(e=document.createElement("div"),e.className="Minebuns-overlay-title",e.textContent=this.options.Text,e.style.position="absolute",e.style.top="0",e.style.left="0",e.style.padding="0.5em",e.style.userSelect="none",e.style.display="none",e.style.zIndex="1000",e.style.textShadow="var(--Minebuns-accent-color) 0px 0px 10px",e.style.fontFamily="'Product Sans', sans-serif",e.style.fontSize="24px",e.style.background="var(--Minebuns-accent-color)",e.style.backgroundClip="text",e.style.webkitFontSmoothing="antialiased",e.style.webkitTextFillColor="transparent",document.body.appendChild(e)),document.querySelector(".Minebuns-overlay-title").style.display="flex"}onDisable(){document.querySelector(".Minebuns-overlay-title").style.display="none"}};var E=class{constructor(e,t){this.module=e,this.container=t,this.components=[],this.initialized=!1,this.isOpen=!1}initialize(){this.initialized||!this.module?.options||(Object.keys(this.module.options).forEach(e=>{let t=this.module.options[e],i=typeof t;e.toLowerCase().includes("color")?this.addColorPicker(e):i==="boolean"||t==="true"||t==="false"?this.addCheckbox(e):i==="string"?this.addStringInput(e):this.addNumberInput(e)}),this.components.forEach(e=>e.style.display="none"),this.initialized=!0)}toggle(){this.isOpen=!this.isOpen,this.components.forEach(e=>{e.style.display=this.isOpen?"flex":"none",this.isOpen?this.container.style.marginBottom="5px":this.container.style.marginBottom="0px"})}addNumberInput(e){let t=document.createElement("div");t.className="gui-setting-container";let i=document.createElement("span");i.className="gui-setting-label",i.textContent=e;let s=document.createElement("input");s.type="text",s.className="gui-text-input",s.value=this.module.options[e];let n=s.value;s.addEventListener("input",()=>{let l=s.value.trim();!isNaN(l)&&l!==""&&(n=l,this.module.options[e]=l,c.emit("setting.update",this.module))}),s.addEventListener("blur",()=>{(isNaN(s.value)||s.value.trim()==="")&&(s.value=n)}),s.addEventListener("keydown",l=>{l.key==="Enter"&&s.blur()}),t.appendChild(i),t.appendChild(s),this.container.appendChild(t),this.components.push(t)}addStringInput(e){let t=document.createElement("div");t.className="gui-setting-container";let i=document.createElement("span");i.className="gui-setting-label",i.textContent=e;let s=document.createElement("input");s.type="text",s.className="gui-text-input",s.value=this.module.options[e],s.addEventListener("input",()=>{let n=s.value.trim();this.module.options[e]=n,c.emit("setting.update",this.module)}),t.appendChild(i),t.appendChild(s),this.container.appendChild(t),this.components.push(t)}addCheckbox(e){let t=document.createElement("div");t.className="gui-setting-container";let i=document.createElement("span");i.className="gui-setting-label",i.textContent=e;let s=document.createElement("div");s.className="gui-checkbox",s.classList.toggle("enabled",this.module.options[e]===!0||this.module.options[e]==="true"),s.addEventListener("click",()=>{let n=s.classList.contains("enabled");s.classList.toggle("enabled"),this.module.options[e]=(!n).toString(),c.emit("setting.update",this.module)}),t.appendChild(i),t.appendChild(s),this.container.appendChild(t),this.components.push(t)}addColorPicker(e){let t=document.createElement("div");t.className="gui-setting-container";let i=document.createElement("span");i.className="gui-setting-label",i.textContent=e;let s=document.createElement("div");s.className="gui-color-picker",s.style.background=this.module.options[e];let n=document.createElement("input");n.type="color",n.className="gui-color-input",s.appendChild(n),n.addEventListener("input",l=>{s.style.background=l.target.value,this.module.options[e]=l.target.value,c.emit("setting.update",this.module)}),s.addEventListener("click",()=>{n.click()}),t.appendChild(i),t.appendChild(s),this.container.appendChild(t),this.components.push(t)}};var S=class{constructor(e,t={top:"200px",left:"200px"}){this.panel=document.createElement("div"),this.panel.className="gui-panel",this.panel.style.top=t.top,this.panel.style.left=t.left,this.header=document.createElement("div"),this.header.className="gui-header",this.header.textContent=e,this.panel.appendChild(this.header),document.body.appendChild(this.panel),this.buttons=[],this.setupDragHandling()}setupDragHandling(){let e=!1,t={x:0,y:0};this.header.addEventListener("mousedown",i=>{e=!0,t.x=i.clientX-this.panel.offsetLeft,t.y=i.clientY-this.panel.offsetTop}),document.addEventListener("mousemove",i=>{e&&(this.panel.style.left=i.clientX-t.x+"px",this.panel.style.top=i.clientY-t.y+"px")}),document.addEventListener("mouseup",()=>e=!1)}addButton(e){let t=document.createElement("div");t.className="gui-button-container";let i=document.createElement("div");i.className=`gui-button ${e.isEnabled?"enabled":""}`,i.textContent=e.name;let s=new E(e,t);return i.addEventListener("mousedown",n=>{n.button===0&&(e.toggle(),i.classList.toggle("enabled",e.isEnabled)),n.button===1&&(i.textContent="waiting for bind..",e.waitingForBind=!0)}),i.addEventListener("contextmenu",n=>{n.preventDefault(),s.initialize(),s.toggle()}),i.setAttribute("tabindex",-1),i.addEventListener("keydown",n=>{i.textContent=e.name,e.waitingForBind&&(n.preventDefault(),n.stopPropagation(),n.stopImmediatePropagation(),n.key==="Escape"?e.keybind=null:e.keybind=String(n.code),e.waitingForBind=!1)}),t.appendChild(i),this.panel.appendChild(t),this.buttons.push(i),i}show(){this.panel.style.display="block"}hide(){this.panel.style.display="none"}};var ae=`@font-face {\r
-    font-family: "Product Sans";\r
-    src: url(https://fonts.gstatic.com/s/productsans/v19/pxiDypQkot1TnFhsFMOfGShVF9eO.woff2);\r
-}\r
-\r
-:root {\r
-    --Minebuns-accent-color: linear-gradient(90deg, rgb(64, 190, 255) 0%, rgb(129, 225, 255) 100%);\r
-    --button-color: rgb(40, 40, 40, 0.9);\r
-    --hover-color: rgb(50, 50, 50, 0.9);\r
-    --panel-bg: rgb(34, 34, 34, 0.85);\r
-    --panel-bg: rgb(10, 10, 10, 0.85);\r
-    --text-color: #ffffff;\r
-    --header-text-size: 25px;\r
-    --button-text-size: 20px;\r
-    --setting-text-size: 15px;\r
-}\r
-\r
-.gui-panel {\r
-    position: fixed;\r
-    z-index: 1000;\r
-    width: 200px;\r
-    border-radius: 8px;\r
-    background-color: var(--panel-bg);\r
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);\r
-    font-family: 'Product Sans', sans-serif;\r
-    color: var(--text-color);\r
-    overflow: hidden;\r
-}\r
-\r
-.gui-header {\r
-    background-color: var(--header-bg);\r
-    height: 40px;\r
-    font-weight: 900;\r
-    display: flex;\r
-    align-items: center;\r
-    justify-content: center;\r
-    font-size: var(--header-text-size);\r
-    cursor: grab;\r
-}\r
-\r
-.gui-header:active {\r
-    cursor: grabbing;\r
-}\r
-\r
-.gui-button {\r
-    height: 35px;\r
-    display: flex;\r
-    align-items: center;\r
-    padding-left: 10px;\r
-    box-sizing: border-box;\r
-    cursor: pointer;\r
-    border-radius: 0;\r
-    transition: all 0.3s;\r
-    font-size: var(--button-text-size);\r
-    font-weight: 200;\r
-    outline: none;\r
-    background: var(--button-color);\r
-    color: var(--text-color);\r
-}\r
-\r
-.gui-button.enabled {\r
-    background: var(--Minebuns-accent-color);\r
-}\r
-\r
-.gui-button:not(.enabled):hover {\r
-    background: var(--hover-color);\r
-}\r
-\r
-.gui-background {\r
-    position: absolute;\r
-    left: 0;\r
-    top: 0;\r
-    z-index: 999;\r
-    height: 100%;\r
-    width: 100%;\r
-    backdrop-filter: blur(15px);\r
-    background: rgba(0, 0, 0, 0.3);\r
-}\r
-\r
-.gui-setting-container {\r
-    display: flex;\r
-    align-items: center;\r
-    justify-content: space-between;\r
-    background-color: var(--panel-bg);\r
-    padding: 2px;\r
-}\r
-\r
-.gui-setting-label {\r
-    font-size: var(--setting-text-size);\r
-    margin-left: 10px;\r
-    font-weight: 300;\r
-    color: var(--text-color);\r
-}\r
-\r
-.gui-checkbox {\r
-    width: 15px;\r
-    height: 15px;\r
-    border-radius: 4px;\r
-    background: var(--button-color);\r
-    position: relative;\r
-    margin: 8px;\r
-    cursor: pointer;\r
-    transition: background 0.3s;\r
-}\r
-\r
-.gui-checkbox.enabled {\r
-    background: var(--Minebuns-accent-color);\r
-}\r
-\r
-.gui-color-picker {\r
-    width: 15px;\r
-    height: 15px;\r
-    border-radius: 4px;\r
-    position: relative;\r
-    margin: 8px;\r
-    cursor: pointer;\r
-}\r
-\r
-.gui-color-input {\r
-    width: 20px;\r
-    height: 20px;\r
-    opacity: 0;\r
-    cursor: pointer;\r
-}\r
-\r
-.gui-button-container {\r
-    background-color: var(--panel-bg);\r
-    display: flex;\r
-    flex-direction: column;\r
-}\r
-\r
-.gui-text-input {\r
-    background: var(--button-color);\r
-    border: none;\r
-    color: var(--text-color);\r
-    font-family: 'Product Sans', sans-serif;\r
-    font-size: var(--setting-text-size);\r
-    width: 40px;\r
-    border-radius: 4px;\r
-    outline: none;\r
-    transition: background 0.3s;\r
-    text-align: center;\r
-    margin: 5px;\r
-    margin-right: 10px;\r
-}\r
-\r
-.gui-text-input:hover {\r
-    background: var(--hover-color);\r
-}\r
-\r
-.gui-text-input:focus {\r
-    background: var(--hover-color);\r
-}\r
-\r
-.with-animations .gui-panel {\r
-    animation: fadeInScale 0.3s ease-out;\r
-}\r
-\r
-@keyframes fadeInScale {\r
-    from {\r
-        opacity: 0;\r
-        transform: scale(0.9);\r
-    }\r
-    to {\r
-        opacity: 1;\r
-        transform: scale(1);\r
-    }\r
-}\r
-\r
-.with-animations .gui-background {\r
-    animation: fadeIn 0.3s ease-out;\r
-}\r
-\r
-@keyframes fadeIn {\r
-    from { opacity: 0; }\r
-    to { opacity: 1; }\r
-}\r
-\r
-.with-animations .gui-button {\r
-    transition: transform 0.2s ease, background 0.2s ease;\r
-}\r
-\r
-.with-animations .gui-button:hover {\r
-    transform: scale(1.01);\r
-}\r
-\r
-.with-animations .gui-setting-container {\r
-    will-change: transform, opacity;\r
-    transform-origin: top;\r
-    animation: slideDown 0.25s ease-out forwards;\r
-}\r
-\r
-@keyframes slideDown {\r
-    from {\r
-        opacity: 0;\r
-        transform: scaleY(0.8);\r
-    }\r
-    to {\r
-        opacity: 1;\r
-        transform: scaleY(1);\r
-    }\r
-}\r
-`;var x={normalizeVector(r){let e=r.x*r.x+r.y*r.y+r.z*r.z;if(e>0){let t=1/Math.sqrt(e);return[r.x*t,r.y*t,r.z*t]}return r},distanceBetween(r,e){let t=e.x-r.x,i=e.y-r.y,s=e.z-r.z;return t*t+i*i+s*s},distanceBetweenSqrt(r,e){return Math.sqrt(this.distanceBetween(r,e))},calculateDistance(r,e){return Math.hypot(e.x-r.x,e.y-r.y,e.z-r.z)},calculateDistanceArr(r,e){return Math.hypot(e[0]-r[0],e[1]-r[1],e[2]-r[2])}};var m={getClosestPlayer(){let r=o.gameWorld.player.position,e=o.gameWorld.server.players,t=[];return e.forEach(function(i,s){let n=x.distanceBetween(r,{x:i._model.position.x,y:i._model.position.y,z:i._model.position.z});i.id=s,t.push({player:i,distance:n})}),t.sort((i,s)=>i.distance-s.distance),t.map(i=>i.player)[0]},hexToRgb(r){var e=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(r);return e?{r:parseInt(e[1],16),g:parseInt(e[2],16),b:parseInt(e[3],16)}:null},rgbToUnit(r){return{r:r.r/255,g:r.g/255,b:r.b/255}},getCssRule(r){for(let e of document.styleSheets)for(let t of e.cssRules||[])if(t.selectorText?.includes(r))return t},openOtherItem(r){let e=Object.values(o.gameWorld.player.position).map(Math.floor),t=o.gameWorld.systemsManager.activeSystems.find(i=>i?.openOtherItem);o.stores.get("inventoryState").setBackpackStates(0),setTimeout(()=>{t.openOtherItem(e,r)},100)}};function ce(r){let e=document.createElement("style");e.textContent=r,document.head.appendChild(e)}ce(ae);var M=class extends a{constructor(){super("ClickGUI","Visual",{"Accent Color 1":"rgb(64, 190, 255)","Accent Color 2":"rgb(129, 225, 255)","Button Color":"rgb(40, 40, 40, 0.9)","Hover Color":"rgb(50, 50, 50, 0.9)","Header Color":"rgb(0, 0, 0, 0.85)","Panel Color":"rgb(18 18 18)","Text Color":"#ffffff","Enable Animations":!0},"ShiftRight"),this.GUILoaded=!1,this.panels=[],this.blurredBackground=null,this.updateColors()}updateAnimations(){this.options["Enable Animations"]?document.body.classList.add("with-animations"):document.body.classList.remove("with-animations")}updateColors(){document.body.style.setProperty("--Minebuns-accent-color",`linear-gradient(90deg, ${this.options["Accent Color 1"]} 0%, ${this.options["Accent Color 2"]} 100%)`),document.body.style.setProperty("--button-color",this.options["Button Color"]),document.body.style.setProperty("--hover-color",this.options["Hover Color"]),document.body.style.setProperty("--header-bg",this.options["Header Color"]),document.body.style.setProperty("--panel-bg",this.options["Panel Color"]),document.body.style.setProperty("--text-color",this.options["Text Color"])}onEnable(){document.pointerLockElement&&document.exitPointerLock(),this.GUILoaded?(this.showGUI(),this.updateAnimations()):(this.setupBackground(),this.createPanels(),this.setupEventListeners(),this.GUILoaded=!0,this.updateAnimations());let e=m.getCssRule(".pause-cont");e&&(e.style.display="none"),this.fixCanvas()}fixCanvas(){document.querySelector("#game")&&game.dispatchEvent(new Event("resize",{bubbles:!0}))}setupBackground(){this.blurredBackground=document.createElement("div"),this.blurredBackground.className="gui-background",document.body.appendChild(this.blurredBackground)}createPanels(){let e=[{title:"Combat",position:{top:"100px",left:"100px"}},{title:"Movement",position:{top:"100px",left:"320px"}},{title:"Visual",position:{top:"100px",left:"540px"}},{title:"Misc",position:{top:"100px",left:"760px"}},{title:"Menus",position:{top:"100px",left:"1000px"}}];this.panels.forEach(i=>{i.panel&&i.panel.parentNode&&i.panel.parentNode.removeChild(i.panel)}),this.panels=[],e.forEach(i=>{let s=new S(i.title,i.position);this.panels.push(s)});let t={};Object.values(h.modules).forEach(i=>{t[i.category]||(t[i.category]=[]),t[i.category].push(i)}),Object.entries(t).forEach(([i,s])=>{let n=this.panels.find(l=>l.header.textContent===i);n&&(s.sort((l,d)=>d.name.length-l.name.length),s.forEach(l=>n.addButton(l)))})}setupEventListeners(){c.on("module.update",e=>{let t=this.panels.find(s=>s.header.textContent===e.category);if(!t)return;let i=t.buttons.find(s=>s.textContent===e.name);i&&i.classList.toggle("enabled",e.isEnabled)})}showGUI(){this.panels.forEach(e=>e.show()),this.blurredBackground.style.display="block"}onDisable(e=!0){this.panels.forEach(n=>n.hide()),this.blurredBackground.style.display="none";let t=m.getCssRule(".pause-cont");t&&(t.style.display="");let i=document.getElementsByClassName("pause-cont")[0];i&&(i.style.display="none"),this.fixCanvas();let s=document.querySelector("#game");e&&s&&s.click()}onSettingUpdate(){this.updateColors(),this.updateAnimations()}};var C=class extends a{constructor(){super("Airjump","Movement",null)}onRender(){o?.gameWorld?.player&&(o.gameWorld.player.collision.isGrounded=!0)}};var W=class extends a{constructor(){super("Instabreak","Misc",null),this.originalHardness=new Map}onEnable(){Object.values(o.gameWorld.items).forEach(e=>{e?.destruction&&(this.originalHardness.has(e)||this.originalHardness.set(e,e.destruction.durability),e.destruction.durability=0)})}onDisable(){Object.values(o.gameWorld.items).forEach(e=>{e?.destruction&&this.originalHardness.has(e)&&(e.destruction.durability=this.originalHardness.get(e))})}};var w=class extends a{constructor(){super("Nuker","Misc",{Radius:4,Delay:120,"Target Selected Block":!1,"Auto Disable":!1}),this.blockIndex=0}get selectedBlock(){return o.gameWorld?.systemsManager.activeExecuteSystems.find(e=>e?.currBlockPos!==void 0)||void 0}onDisable(){this.blockIndex=0}onEnable(){this.blockIndex=0;let e=this.options.Radius,t=Object.values(o.gameWorld.player.position).map(Math.floor);t[1]--,this.options["Target Selected Block"]&&this.selectedBlock&&(t=[...this.selectedBlock.currBlockPos]);let i=-e,s=-e,n=-e,l=[];for(;i<=e;){for(;s<=e;){for(;n<=e;){if(Math.sqrt(i*i+s*s+n*n)<=e){let f=[t[0]+i,t[1]+s,t[2]+n];o.gameWorld.chunkManager.getBlock(...f)!==0&&l.push(f)}n++}n=-e,s++}s=-e,i++}let d=this,u=this.options;function y(){if(d.isEnabled)if(d.blockIndex<l.length){let[f,g,b]=l[d.blockIndex];setTimeout(()=>{d.isEnabled&&(o.gameWorld.chunkManager.setBlock(f,g,b,0,!0),d.blockIndex++,y())},u.Delay)}else d.blockIndex=0,u["Auto Disable"]?d.disable():d.isEnabled&&d.onEnable()}y()}};var B=class extends a{constructor(){super("AdBypass","Misc")}onEnable(){this._reward=this._reward||o.stores.get("adsStore").rewardCommercialVideoWrapper,o.stores.get("adsStore").rewardCommercialVideoWrapper=()=>!0}onDisable(){o.stores.get("adsStore").rewardCommercialVideoWrapper=()=>this._reward}};var I=class extends a{constructor(){super("Fly","Movement",{"Vertical Speed":5})}onRender(){o?.gameWorld?.player&&(o.gameWorld.player.velocity.gravity=0,o?.gameWorld?.player?.inputs.jump?o.gameWorld.player.velocity.velVec3.y=this.options["Vertical Speed"]:o?.gameWorld?.player?.inputs.crouch?o.gameWorld.player.velocity.velVec3.y=-this.options["Vertical Speed"]:o.gameWorld.player.velocity.velVec3.y=0)}onDisable(){o.gameWorld.player.velocity.gravity=23}};var P=class extends a{constructor(){super("Speed","Movement",{Speed:15})}onRender(){o?.gameWorld?.player&&(o.gameWorld.player.velocity.moveSpeed=this.options.Speed,o.gameWorld.player.velocity.fastMoveSpeed=this.options.Speed)}onDisable(){o.gameWorld.player.velocity.moveSpeed=4.5,o.gameWorld.player.velocity.fastMoveSpeed=6.4}};var A=class extends a{constructor(){super("FreeHeadcoins","Misc")}async onEnable(){let e=await o.network.get("users/freeSpinner");o.stores.get("userState").user.balance.headcoins+=e.data.amount,h.modules.FreeHeadcoins.disable()}};var _=class extends a{constructor(){super("Fill","Misc",{Radius:4,"Block ID":652,"Chunk Interval":500}),this.lastExecutionTime=0}onRender(){if(!o?.gameWorld?.player)return;let e=this.options.Radius,t=this.options["Chunk Interval"],i=Date.now();if(i-this.lastExecutionTime>=t){this.lastExecutionTime=i;let s=Object.values(o.gameWorld.player.position).splice(0,3).map(Math.floor);for(let n=-e;n<=e;n++)for(let l=-e;l<=e;l++)for(let d=-e;d<=e;d++){let[u,y,f]=[s[0]+n,s[1]+l,s[2]+d];o.gameWorld.chunkManager.getBlock(u,y,f)==0&&o.gameWorld.chunkManager.setBlock(u,y,f,this.options["Block ID"],!0,!0)}}}};var D=class extends a{constructor(){super("Chams","Visual",null)}onRender(){o?.gameWorld?.player&&o.gameWorld.server.players.forEach(e=>{e.playerMaterial.depthTest=!1,e.playerMaterial.wireframe=!0})}onDisable(){o.gameWorld.server.players.forEach(e=>{e.playerMaterial.depthTest=!0,e.playerMaterial.wireframe=!1})}};var R=class extends a{constructor(){super("Scaffold","Movement",null)}onRender(){if(!o?.gameWorld?.player)return;let e=Object.values(o.gameWorld.player.position).splice(0,3).map(Math.floor);e[1]--;let t=o.gameWorld.player.currentInventoryItemId,i=o.gameWorld.chunkManager.getBlock(...e),s=o.gameWorld.items[i]?.replaceable||!1;(i==0||s)&&t&&o.gameWorld.chunkManager.setBlock(...e,t,!0,!0)}};var T=class extends a{constructor(){super("Killaura","Combat",{"Y Offset":1.62,Reach:5,Delay:100}),this.lastExecutionTime=null}onRender(){let e=Date.now();o?.gameWorld?.player&&e-this.lastExecutionTime>=this.options.Delay&&(this.lastExecutionTime=e,this.tryKill())}tryKill(){let e=this.options.Reach,t=this.options["Y Offset"],i=m.getClosestPlayer();var s={x:o.gameWorld.player.position.x,y:o.gameWorld.player.position.y+t,z:o.gameWorld.player.position.z},n=i._model.position,l={x:s.x-n.x,y:s.y-n.y,z:s.z-n.z},d=Math.sqrt(l.x*l.x+l.y*l.y+l.z*l.z);d!==0&&(l.x/=d,l.y/=d,l.z/=d),l.x=-l.x,l.y=-l.y,l.z=-l.z;var u=Math.sqrt(Math.pow(s.x-n.x,2)+Math.pow(s.y-n.y,2)+Math.pow(s.z-n.z,2));u<e&&o.gameWorld.server.sendData(13,[o.gameWorld.time.localServerTimeMs,s.x,s.y,s.z,l.x,l.y,l.z,u,i.id])}};var z=class extends a{constructor(){super("GunModifier","Combat",{Spread:.5,"Bullets per shot":100,"Firerate (ms)":1,"Bullet distance":1e3,"Reload Time":1,Recoil:!1})}get gunSystem(){return o.gameWorld.systemsManager.activeSystems.find(e=>e?.bulletsSystem)}onEnable(){let e=this.gunSystem.playerShooter.currPlayerWeaponSpec;e.bulletsPerShot=this.options["Bullets per shot"],e.firerateMs=this.options["Firerate (ms)"],e.distance=this.options["Bullet distance"],e.startSpread=this.options.Spread,e.reloadTimeMs=this.options["Reload Time"],this.options.Recoil||(e.recoilAttackY=0,e.recoilAttackY=0)}};var O=class extends a{constructor(){super("Aimbot","Combat",{"On Aim":"true","On Shoot":"true","Y Offset":.5}),this.lastExecutionTime=null}getClosestEnemy(e,t){let i=null,s=1/0;return t.forEach(n=>{if(n?.model?.position&&n.isAlive){let l=x.calculateDistance(e.position,n.model.position);l<s&&(s=l,i=n)}}),i}aimAtEnemy(){let e=o.gameWorld.player,t=o.gameWorld.server.players;if(!e||!t)return;let i=this.getClosestEnemy(e,t);if(i){let s=i.model.position,n=e.position,l={x:s.x-n.x,z:s.z-n.z},d=Math.atan2(l.x,l.z),u=parseFloat(this.options["Y Offset"]),y=s.y+u-n.y,f=Math.hypot(l.x,l.z),g=Math.atan2(y,f);g=Math.max(Math.min(g,Math.PI/2),-Math.PI/2);let b=(d+Math.PI)%(2*Math.PI);e.rotation.y=b,e.rotation.x=g}}onRender(){o?.gameWorld?.server&&(this.options["On Aim"]=="true"&&o.gameWorld.player.inputs.rightMB?this.aimAtEnemy():this.options["On Shoot"]=="true"&&o.gameWorld.player.inputs.leftMB?this.aimAtEnemy():this.options["On Shoot"]!=="true"&&this.options["On Aim"]!=="true"&&this.aimAtEnemy())}};var N=class extends a{constructor(){super("NoClip","Movement")}get playerPhysicsSystem(){return o.gameWorld.systemsManager.activeSystems.find(e=>e?.playerPhysicsSystem).playerPhysicsSystem}onRender(){o?.gameWorld?.player&&(this._og=this._og||this.playerPhysicsSystem.resolveBlockCollision,this.playerPhysicsSystem.resolveBlockCollision==this._og&&(this.playerPhysicsSystem.resolveBlockCollision=()=>{}))}onDisable(){this.playerPhysicsSystem.resolveBlockCollision=this._og}};var L=class extends a{constructor(){super("Timer","Movement",{Multiplier:1.2}),this.interval=null}onEnable(){this.interval&&clearInterval(this.interval),this.interval=setInterval(()=>{let e=o.gameWorld.time;e.elapsedTimeMs+=20*this.options.Multiplier},20)}onDisable(){this.interval&&clearInterval(this.interval)}};var U=class extends a{constructor(){super("HighJump","Movement",{"Jump Height":25})}onRender(){o.gameWorld.player.velocity.jumpSpeed=parseFloat(this.options["Jump Height"])}onDisable(){o.gameWorld.player.velocity.jumpSpeed=8.285714285714286}};var p={toServer:{TIME_STEP_INFO:1,REQUEST_RESPAWN:4,GOT_DAMAGE:27,PARKOUR_REQUEST_RESPAWN:1004,ONE_BLOCK_REQUEST_RESPAWN:1552,BED_WARS_REQUEST_RESPAWN:1600,SANDBOX_REQUEST_RESPAWN:1700},toClient:{SET_WALK_MODE:41,SET_INVISIBLE_MODE:42},listeners:{},packetListener(r,e){Object.values(this.listeners).forEach(t=>{let i=t(r,e);i!=null&&(e=i)}),o.gameWorld.server.msgsToSend.push(r,e)},init(){c.on("render",()=>{o?.gameWorld?.server?.sendData&&(o.gameWorld.server.sendData=this.packetListener.bind(this))})}};var H=class extends a{constructor(){super("NoHunger","Misc",null)}onEnable(){p.listeners.NoHunger=function(e,t){e==p.toServer.TIME_STEP_INFO&&(t.m&&delete t.m,t.s&&delete t.s,t.j&&delete t.j)}}onDisable(){delete p.listeners.NoHunger}};var V=class extends a{constructor(){super("NoDrown","Misc",null)}get damageListener(){return o.gameWorld.eventEmitter._events.get(48).values().next().value}onRender(){o?.gameWorld?.eventEmitter?._events&&this.damageListener.callback.toString().includes("damageToApply")&&(this.damageListener.callback=()=>{})}onDisable(){o?.gameWorld?.eventEmitter?._events&&(this.damageListener.callback=e=>{this.damageToApply+=e})}};var K=class extends a{constructor(){super("GroundSpeed","Movement",{Speed:15})}get playerPhysicsSystem(){return o.gameWorld.systemsManager.activeSystems.find(e=>e?.playerPhysicsSystem).playerPhysicsSystem}resetMovementSpeed(){o.gameWorld.player.velocity.moveSpeed=4.5,o.gameWorld.player.velocity.fastMoveSpeed=6.4}onRender(){o?.gameWorld?.player&&(o.gameWorld.player.collision.isGrounded?(o.gameWorld.player.velocity.moveSpeed=this.options.Speed,o.gameWorld.player.velocity.fastMoveSpeed=this.options.Speed):this.resetMovementSpeed())}onEnable(){let e=0,t=0;this.playerPhysicsSystem.BB.min.__defineGetter__("y",()=>e-.1),this.playerPhysicsSystem.BB.max.__defineGetter__("y",()=>t-.1),this.playerPhysicsSystem.BB.min.__defineSetter__("y",i=>{e=i}),this.playerPhysicsSystem.BB.max.__defineSetter__("y",i=>{t=i})}onDisable(){this.resetMovementSpeed(),delete this.playerPhysicsSystem.BB.min.y,delete this.playerPhysicsSystem.BB.max.y}};var F=class extends a{constructor(){super("InstantRespawn","Misc")}get gamemode(){return location.pathname.replace("/match/","")}onRender(){if(o.gameWorld?.player.isAlive)return;let e=!1;switch(this.gamemode){case"one-block":o.gameWorld.server.sendData(p.toServer.ONE_BLOCK_REQUEST_RESPAWN,!0),e=!0;case"parkour":o.gameWorld.server.sendData(p.toServer.PARKOUR_REQUEST_RESPAWN,!0),e=!0;case"bedwars":o.gameWorld.server.sendData(p.toServer.BED_WARS_REQUEST_RESPAWN,!0),e=!0;case"survival":o.gameWorld.server.sendData(p.toServer.SANDBOX_REQUEST_RESPAWN,!0),e=!0}e&&o.stores.get("gameState").setLayoutState(0)}};var j=class extends a{constructor(){super("ShopAnywhere","Misc")}get npcSystem(){return o?.gameWorld?.systemsManager?.activeSystems.find(e=>e?.isPlayerInShoppingZone)}onRender(){this?.npcSystem?.isPlayerInShoppingZone&&(this._og=this._og||this.npcSystem.isPlayerInShoppingZone,this.npcSystem.isPlayerInShoppingZone==this._og&&(this.npcSystem.isPlayerInShoppingZone=()=>!0))}onDisable(){this.npcSystem.isPlayerInShoppingZone=this._og}};var G=class extends a{constructor(){super("SelfHarm","Misc",{Amount:1})}onEnable(){o.gameWorld.server.msgsToSend.push(p.toServer.GOT_DAMAGE,parseFloat(this.options.Amount)),this.disable()}};var Y=class extends a{constructor(){super("BlockFinder","Misc",{"Search Radius":16,"Block ID":581}),this.CHUNK_SIZE=16,this.CHUNK_CHECK_MS=200,this.foundBlocks=[],this.lastChunkKey="",this.chunkInterval=null,this.raf=null,this.ui=null,this.listEl=null}getPlayerChunk(){let e=o.gameWorld.player.position;return[Math.floor(e.x/this.CHUNK_SIZE),Math.floor(e.y/this.CHUNK_SIZE),Math.floor(e.z/this.CHUNK_SIZE)]}createUI(){if(this.ui)return;let e=document.createElement("div");e.style.cssText=`
+(()=>{var c={listeners:{},activeKeys:new Set,on:function(r,e){this.listeners[r]||(this.listeners[r]=[]),this.listeners[r].push(e)},remove:function(r,e){this.listeners[r]&&(this.listeners[r]=this.listeners[r].filter(t=>t!==e))},emit:function(r,e){this.listeners[r]&&this.listeners[r].forEach(t=>t(e))},trackKey:function(r,e,t){r==="keydown"&&moduleManager.handleKeyPress(t),r==="keydown"&&!this.activeKeys.has(e)&&(this.activeKeys.add(e),this.emit("keyPress",{key:e,code:t})),r==="keyup"&&this.activeKeys.has(e)&&(this.activeKeys.delete(e),this.emit("keyRelease",{key:e,code:t}))}};var a=class{constructor(e,t,i,o){this.name=e,this.category=t,this.options=i,this.keybind=o,this.waitingForBind=!1,this.isEnabled=!1,this.toggle=this.toggle.bind(this)}onEnable(){}onDisable(){}onRender(){}onSettingUpdate(){}enable(){this.isEnabled=!0,c.emit("module.update",this),this.onEnable()}disable(){this.isEnabled=!1,c.emit("module.update",this),this.onDisable()}toggle(){this.isEnabled?this.disable():this.enable()}};var v=class extends a{constructor(){super("Arraylist","Visual"),this.namesMap={},this.arraylistContainer=null,this.initialized=!1}update(e,t){if(t){if(!this.namesMap[e]){let o=document.createElement("div");o.style.backgroundColor="rgba(10, 10, 10, 0.7)",o.style.color="white",o.style.padding="2px 10px 2px 10px",o.style.display="flex",o.style.alignItems="center",o.style.boxSizing="border-box",o.style.margin="0",o.style.fontFamily="'Product Sans', sans-serif",o.style.boxShadow="rgb(0, 0, 0, 0.05) -5px 1px",o.style.transition="max-height 0.2s ease-in-out, opacity 0.2s ease-in-out",o.style.overflow="hidden",o.style.maxHeight="0",o.style.opacity="0";let n=document.createElement("span");n.style.fontWeight="800",n.style.fontSize="16px",n.style.backgroundImage="var(--Minebuns-accent-color)",n.style.color="transparent",n.style.backgroundClip="text",n.innerHTML=e,o.appendChild(n),this.arraylistContainer.appendChild(o),setTimeout(()=>{o.style.maxHeight="50px",o.style.opacity="1"},1),this.namesMap[e]=o}}else if(this.namesMap[e]){let o=this.namesMap[e];o.style.maxHeight="0",o.style.opacity="0",setTimeout(()=>{this.arraylistContainer.removeChild(o),delete this.namesMap[e]},5)}let i=Object.values(this.namesMap).sort((o,n)=>this.measureElementWidth(n)-this.measureElementWidth(o));this.arraylistContainer.innerHTML="",i.forEach(o=>{this.arraylistContainer.appendChild(o)})}onEnable(){this.initialized?this.arraylistContainer.style.opacity="1":(this.arraylistContainer=document.createElement("div"),this.arraylistContainer.style.flexDirection="column",this.arraylistContainer.style.position="absolute",this.arraylistContainer.style.zIndex="1000",this.arraylistContainer.style.display="flex",this.arraylistContainer.style.right="5px",this.arraylistContainer.style.top="5px",this.arraylistContainer.style.alignItems="flex-end",this.arraylistContainer.style.pointerEvents="none",this.arraylistContainer.style.textTransform="lowercase",this.arraylistContainer.style.border="2px solid transparent",this.arraylistContainer.style.borderImage="var(--Minebuns-accent-color)",this.arraylistContainer.style.borderImageSlice="1",this.arraylistContainer.style.borderBottom="0",this.arraylistContainer.style.borderLeft="0",document.body.appendChild(this.arraylistContainer),c.on("module.update",e=>{this.update(e.name,e.isEnabled)}),this.initialized=!0)}measureElementWidth(e){return e.getBoundingClientRect().width}onDisable(){this.arraylistContainer.style.opacity="0"}};var s={get stores(){if(this._stores)return this._stores;{let r=app._vnode.component.appContext.provides,e=r[Object.getOwnPropertySymbols(r).find(t=>r[t]._s)];return this._stores=e._s}},get gameWorld(){return this.stores.get("gameState").gameWorld}};var k=class extends a{constructor(){super("Watermark","Visual",{Text:"Minebuns"})}onSettingUpdate(){let e=document.querySelector(".Minebuns-overlay-title");e&&(e.textContent=this.options.Text)}onEnable(){let e=document.querySelector(".Minebuns-overlay-title");e||(e=document.createElement("div"),e.className="Minebuns-overlay-title",e.textContent=this.options.Text,e.style.position="absolute",e.style.top="0",e.style.left="0",e.style.padding="0.5em",e.style.userSelect="none",e.style.display="none",e.style.zIndex="1000",e.style.textShadow="var(--Minebuns-accent-color) 0px 0px 10px",e.style.fontFamily="'Product Sans', sans-serif",e.style.fontSize="24px",e.style.background="var(--Minebuns-accent-color)",e.style.backgroundClip="text",e.style.webkitFontSmoothing="antialiased",e.style.webkitTextFillColor="transparent",document.body.appendChild(e)),document.querySelector(".Minebuns-overlay-title").style.display="flex"}onDisable(){document.querySelector(".Minebuns-overlay-title").style.display="none"}};var E=class{constructor(e,t){this.module=e,this.container=t,this.components=[],this.initialized=!1,this.isOpen=!1}initialize(){this.initialized||!this.module?.options||(Object.keys(this.module.options).forEach(e=>{let t=this.module.options[e],i=typeof t;e.toLowerCase().includes("color")?this.addColorPicker(e):i==="boolean"||t==="true"||t==="false"?this.addCheckbox(e):i==="string"?this.addStringInput(e):this.addNumberInput(e)}),this.components.forEach(e=>e.style.display="none"),this.initialized=!0)}toggle(){this.isOpen=!this.isOpen,this.components.forEach(e=>{e.style.display=this.isOpen?"flex":"none",this.isOpen?this.container.style.marginBottom="5px":this.container.style.marginBottom="0px"})}addNumberInput(e){let t=document.createElement("div");t.className="gui-setting-container";let i=document.createElement("span");i.className="gui-setting-label",i.textContent=e;let o=document.createElement("input");o.type="text",o.className="gui-text-input",o.value=this.module.options[e];let n=o.value;o.addEventListener("input",()=>{let l=o.value.trim();!isNaN(l)&&l!==""&&(n=l,this.module.options[e]=l,c.emit("setting.update",this.module))}),o.addEventListener("blur",()=>{(isNaN(o.value)||o.value.trim()==="")&&(o.value=n)}),o.addEventListener("keydown",l=>{l.key==="Enter"&&o.blur()}),t.appendChild(i),t.appendChild(o),this.container.appendChild(t),this.components.push(t)}addStringInput(e){let t=document.createElement("div");t.className="gui-setting-container";let i=document.createElement("span");i.className="gui-setting-label",i.textContent=e;let o=document.createElement("input");o.type="text",o.className="gui-text-input",o.value=this.module.options[e],o.addEventListener("input",()=>{let n=o.value.trim();this.module.options[e]=n,c.emit("setting.update",this.module)}),t.appendChild(i),t.appendChild(o),this.container.appendChild(t),this.components.push(t)}addCheckbox(e){let t=document.createElement("div");t.className="gui-setting-container";let i=document.createElement("span");i.className="gui-setting-label",i.textContent=e;let o=document.createElement("div");o.className="gui-checkbox",o.classList.toggle("enabled",this.module.options[e]===!0||this.module.options[e]==="true"),o.addEventListener("click",()=>{let n=o.classList.contains("enabled");o.classList.toggle("enabled"),this.module.options[e]=(!n).toString(),c.emit("setting.update",this.module)}),t.appendChild(i),t.appendChild(o),this.container.appendChild(t),this.components.push(t)}addColorPicker(e){let t=document.createElement("div");t.className="gui-setting-container";let i=document.createElement("span");i.className="gui-setting-label",i.textContent=e;let o=document.createElement("div");o.className="gui-color-picker",o.style.background=this.module.options[e];let n=document.createElement("input");n.type="color",n.className="gui-color-input",o.appendChild(n),n.addEventListener("input",l=>{o.style.background=l.target.value,this.module.options[e]=l.target.value,c.emit("setting.update",this.module)}),o.addEventListener("click",()=>{n.click()}),t.appendChild(i),t.appendChild(o),this.container.appendChild(t),this.components.push(t)}};var S=class{constructor(e,t={top:"200px",left:"200px"}){this.panel=document.createElement("div"),this.panel.className="gui-panel",this.panel.style.top=t.top,this.panel.style.left=t.left,this.header=document.createElement("div"),this.header.className="gui-header",this.header.textContent=e,this.panel.appendChild(this.header),document.body.appendChild(this.panel),this.buttons=[],this.setupDragHandling()}setupDragHandling(){let e=!1,t={x:0,y:0};this.header.addEventListener("mousedown",i=>{e=!0,t.x=i.clientX-this.panel.offsetLeft,t.y=i.clientY-this.panel.offsetTop}),document.addEventListener("mousemove",i=>{e&&(this.panel.style.left=i.clientX-t.x+"px",this.panel.style.top=i.clientY-t.y+"px")}),document.addEventListener("mouseup",()=>e=!1)}addButton(e){let t=document.createElement("div");t.className="gui-button-container";let i=document.createElement("div");i.className=`gui-button ${e.isEnabled?"enabled":""}`,i.textContent=e.name;let o=new E(e,t);return i.addEventListener("mousedown",n=>{n.button===0&&(e.toggle(),i.classList.toggle("enabled",e.isEnabled)),n.button===1&&(i.textContent="waiting for bind..",e.waitingForBind=!0)}),i.addEventListener("contextmenu",n=>{n.preventDefault(),o.initialize(),o.toggle()}),i.setAttribute("tabindex",-1),i.addEventListener("keydown",n=>{i.textContent=e.name,e.waitingForBind&&(n.preventDefault(),n.stopPropagation(),n.stopImmediatePropagation(),n.key==="Escape"?e.keybind=null:e.keybind=String(n.code),e.waitingForBind=!1)}),t.appendChild(i),this.panel.appendChild(t),this.buttons.push(i),i}show(){this.panel.style.display="block"}hide(){this.panel.style.display="none"}};var ae=`@font-face {
+    font-family: "Product Sans";
+    src: url(https://fonts.gstatic.com/s/productsans/v19/pxiDypQkot1TnFhsFMOfGShVF9eO.woff2);
+}
+
+:root {
+    --Minebuns-accent-color: linear-gradient(90deg, rgb(64, 190, 255) 0%, rgb(129, 225, 255) 100%);
+    --button-color: rgb(40, 40, 40, 0.9);
+    --hover-color: rgb(50, 50, 50, 0.9);
+    --panel-bg: rgb(34, 34, 34, 0.85);
+    --panel-bg: rgb(10, 10, 10, 0.85);
+    --text-color: #ffffff;
+    --header-text-size: 25px;
+    --button-text-size: 20px;
+    --setting-text-size: 15px;
+}
+
+.gui-panel {
+    position: fixed;
+    z-index: 1000;
+    width: 200px;
+    border-radius: 8px;
+    background-color: var(--panel-bg);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    font-family: 'Product Sans', sans-serif;
+    color: var(--text-color);
+    overflow: hidden;
+}
+
+.gui-header {
+    background-color: var(--header-bg);
+    height: 40px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--header-text-size);
+    cursor: grab;
+}
+
+.gui-header:active {
+    cursor: grabbing;
+}
+
+.gui-button {
+    height: 35px;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    box-sizing: border-box;
+    cursor: pointer;
+    border-radius: 0;
+    transition: all 0.3s;
+    font-size: var(--button-text-size);
+    font-weight: 200;
+    outline: none;
+    background: var(--button-color);
+    color: var(--text-color);
+}
+
+.gui-button.enabled {
+    background: var(--Minebuns-accent-color);
+}
+
+.gui-button:not(.enabled):hover {
+    background: var(--hover-color);
+}
+
+.gui-background {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 999;
+    height: 100%;
+    width: 100%;
+    backdrop-filter: blur(15px);
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.gui-setting-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--panel-bg);
+    padding: 2px;
+}
+
+.gui-setting-label {
+    font-size: var(--setting-text-size);
+    margin-left: 10px;
+    font-weight: 300;
+    color: var(--text-color);
+}
+
+.gui-checkbox {
+    width: 15px;
+    height: 15px;
+    border-radius: 4px;
+    background: var(--button-color);
+    position: relative;
+    margin: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.gui-checkbox.enabled {
+    background: var(--Minebuns-accent-color);
+}
+
+.gui-color-picker {
+    width: 15px;
+    height: 15px;
+    border-radius: 4px;
+    position: relative;
+    margin: 8px;
+    cursor: pointer;
+}
+
+.gui-color-input {
+    width: 20px;
+    height: 20px;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.gui-button-container {
+    background-color: var(--panel-bg);
+    display: flex;
+    flex-direction: column;
+}
+
+.gui-text-input {
+    background: var(--button-color);
+    border: none;
+    color: var(--text-color);
+    font-family: 'Product Sans', sans-serif;
+    font-size: var(--setting-text-size);
+    width: 40px;
+    border-radius: 4px;
+    outline: none;
+    transition: background 0.3s;
+    text-align: center;
+    margin: 5px;
+    margin-right: 10px;
+}
+
+.gui-text-input:hover {
+    background: var(--hover-color);
+}
+
+.gui-text-input:focus {
+    background: var(--hover-color);
+}
+
+.with-animations .gui-panel {
+    animation: fadeInScale 0.3s ease-out;
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.with-animations .gui-background {
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.with-animations .gui-button {
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.with-animations .gui-button:hover {
+    transform: scale(1.01);
+}
+
+.with-animations .gui-setting-container {
+    will-change: transform, opacity;
+    transform-origin: top;
+    animation: slideDown 0.25s ease-out forwards;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: scaleY(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scaleY(1);
+    }
+}
+`;var x={normalizeVector(r){let e=r.x*r.x+r.y*r.y+r.z*r.z;if(e>0){let t=1/Math.sqrt(e);return[r.x*t,r.y*t,r.z*t]}return r},distanceBetween(r,e){let t=e.x-r.x,i=e.y-r.y,o=e.z-r.z;return t*t+i*i+o*o},distanceBetweenSqrt(r,e){return Math.sqrt(this.distanceBetween(r,e))},calculateDistance(r,e){return Math.hypot(e.x-r.x,e.y-r.y,e.z-r.z)},calculateDistanceArr(r,e){return Math.hypot(e[0]-r[0],e[1]-r[1],e[2]-r[2])}};var m={getClosestPlayer(){let r=s.gameWorld.player.position,e=s.gameWorld.server.players,t=[];return e.forEach(function(i,o){let n=x.distanceBetween(r,{x:i._model.position.x,y:i._model.position.y,z:i._model.position.z});i.id=o,t.push({player:i,distance:n})}),t.sort((i,o)=>i.distance-o.distance),t.map(i=>i.player)[0]},hexToRgb(r){var e=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(r);return e?{r:parseInt(e[1],16),g:parseInt(e[2],16),b:parseInt(e[3],16)}:null},rgbToUnit(r){return{r:r.r/255,g:r.g/255,b:r.b/255}},getCssRule(r){for(let e of document.styleSheets)for(let t of e.cssRules||[])if(t.selectorText?.includes(r))return t},openOtherItem(r){let e=Object.values(s.gameWorld.player.position).map(Math.floor),t=s.gameWorld.systemsManager.activeSystems.find(i=>i?.openOtherItem);s.stores.get("inventoryState").setBackpackStates(0),setTimeout(()=>{t.openOtherItem(e,r)},100)}};function ce(r){let e=document.createElement("style");e.textContent=r,document.head.appendChild(e)}ce(ae);var M=class extends a{constructor(){super("ClickGUI","Visual",{"Accent Color 1":"rgb(64, 190, 255)","Accent Color 2":"rgb(129, 225, 255)","Button Color":"rgb(40, 40, 40, 0.9)","Hover Color":"rgb(50, 50, 50, 0.9)","Header Color":"rgb(0, 0, 0, 0.85)","Panel Color":"rgb(18 18 18)","Text Color":"#ffffff","Enable Animations":!0},"ShiftRight"),this.GUILoaded=!1,this.panels=[],this.blurredBackground=null,this.updateColors()}updateAnimations(){this.options["Enable Animations"]?document.body.classList.add("with-animations"):document.body.classList.remove("with-animations")}updateColors(){document.body.style.setProperty("--Minebuns-accent-color",`linear-gradient(90deg, ${this.options["Accent Color 1"]} 0%, ${this.options["Accent Color 2"]} 100%)`),document.body.style.setProperty("--button-color",this.options["Button Color"]),document.body.style.setProperty("--hover-color",this.options["Hover Color"]),document.body.style.setProperty("--header-bg",this.options["Header Color"]),document.body.style.setProperty("--panel-bg",this.options["Panel Color"]),document.body.style.setProperty("--text-color",this.options["Text Color"])}onEnable(){document.pointerLockElement&&document.exitPointerLock(),this.GUILoaded?(this.showGUI(),this.updateAnimations()):(this.setupBackground(),this.createPanels(),this.setupEventListeners(),this.GUILoaded=!0,this.updateAnimations());let e=m.getCssRule(".pause-cont");e&&(e.style.display="none"),this.fixCanvas()}fixCanvas(){document.querySelector("#game")&&game.dispatchEvent(new Event("resize",{bubbles:!0}))}setupBackground(){this.blurredBackground=document.createElement("div"),this.blurredBackground.className="gui-background",document.body.appendChild(this.blurredBackground)}createPanels(){let e=[{title:"Combat",position:{top:"100px",left:"100px"}},{title:"Movement",position:{top:"100px",left:"320px"}},{title:"Visual",position:{top:"100px",left:"540px"}},{title:"Misc",position:{top:"100px",left:"760px"}},{title:"Menus",position:{top:"100px",left:"1000px"}}];this.panels.forEach(i=>{i.panel&&i.panel.parentNode&&i.panel.parentNode.removeChild(i.panel)}),this.panels=[],e.forEach(i=>{let o=new S(i.title,i.position);this.panels.push(o)});let t={};Object.values(h.modules).forEach(i=>{t[i.category]||(t[i.category]=[]),t[i.category].push(i)}),Object.entries(t).forEach(([i,o])=>{let n=this.panels.find(l=>l.header.textContent===i);n&&(o.sort((l,d)=>d.name.length-l.name.length),o.forEach(l=>n.addButton(l)))})}setupEventListeners(){c.on("module.update",e=>{let t=this.panels.find(o=>o.header.textContent===e.category);if(!t)return;let i=t.buttons.find(o=>o.textContent===e.name);i&&i.classList.toggle("enabled",e.isEnabled)})}showGUI(){this.panels.forEach(e=>e.show()),this.blurredBackground.style.display="block"}onDisable(e=!0){this.panels.forEach(n=>n.hide()),this.blurredBackground.style.display="none";let t=m.getCssRule(".pause-cont");t&&(t.style.display="");let i=document.getElementsByClassName("pause-cont")[0];i&&(i.style.display="none"),this.fixCanvas();let o=document.querySelector("#game");e&&o&&o.click()}onSettingUpdate(){this.updateColors(),this.updateAnimations()}};var C=class extends a{constructor(){super("Airjump","Movement",null)}onRender(){s?.gameWorld?.player&&(s.gameWorld.player.collision.isGrounded=!0)}};var W=class extends a{constructor(){super("Instabreak","Misc",null),this.originalHardness=new Map}onEnable(){Object.values(s.gameWorld.items).forEach(e=>{e?.destruction&&(this.originalHardness.has(e)||this.originalHardness.set(e,e.destruction.durability),e.destruction.durability=0)})}onDisable(){Object.values(s.gameWorld.items).forEach(e=>{e?.destruction&&this.originalHardness.has(e)&&(e.destruction.durability=this.originalHardness.get(e))})}};var w=class extends a{constructor(){super("Nuker","Misc",{Radius:4,Delay:120,"Target Selected Block":!1,"Auto Disable":!1}),this.blockIndex=0}get selectedBlock(){return s.gameWorld?.systemsManager.activeExecuteSystems.find(e=>e?.currBlockPos!==void 0)||void 0}onDisable(){this.blockIndex=0}onEnable(){this.blockIndex=0;let e=this.options.Radius,t=Object.values(s.gameWorld.player.position).map(Math.floor);t[1]--,this.options["Target Selected Block"]&&this.selectedBlock&&(t=[...this.selectedBlock.currBlockPos]);let i=-e,o=-e,n=-e,l=[];for(;i<=e;){for(;o<=e;){for(;n<=e;){if(Math.sqrt(i*i+o*o+n*n)<=e){let f=[t[0]+i,t[1]+o,t[2]+n];s.gameWorld.chunkManager.getBlock(...f)!==0&&l.push(f)}n++}n=-e,o++}o=-e,i++}let d=this,u=this.options;function g(){if(d.isEnabled)if(d.blockIndex<l.length){let[f,y,b]=l[d.blockIndex];setTimeout(()=>{d.isEnabled&&(s.gameWorld.chunkManager.setBlock(f,y,b,0,!0),d.blockIndex++,g())},u.Delay)}else d.blockIndex=0,u["Auto Disable"]?d.disable():d.isEnabled&&d.onEnable()}g()}};var B=class extends a{constructor(){super("AdBypass","Misc")}onEnable(){this._reward=this._reward||s.stores.get("adsStore").rewardCommercialVideoWrapper,s.stores.get("adsStore").rewardCommercialVideoWrapper=()=>!0}onDisable(){s.stores.get("adsStore").rewardCommercialVideoWrapper=()=>this._reward}};var I=class extends a{constructor(){super("Fly","Movement",{"Vertical Speed":5})}onRender(){s?.gameWorld?.player&&(s.gameWorld.player.velocity.gravity=0,s?.gameWorld?.player?.inputs.jump?s.gameWorld.player.velocity.velVec3.y=this.options["Vertical Speed"]:s?.gameWorld?.player?.inputs.crouch?s.gameWorld.player.velocity.velVec3.y=-this.options["Vertical Speed"]:s.gameWorld.player.velocity.velVec3.y=0)}onDisable(){s.gameWorld.player.velocity.gravity=23}};var P=class extends a{constructor(){super("Speed","Movement",{Speed:15})}onRender(){s?.gameWorld?.player&&(s.gameWorld.player.velocity.moveSpeed=this.options.Speed,s.gameWorld.player.velocity.fastMoveSpeed=this.options.Speed)}onDisable(){s.gameWorld.player.velocity.moveSpeed=4.5,s.gameWorld.player.velocity.fastMoveSpeed=6.4}};var A=class extends a{constructor(){super("FreeHeadcoins","Misc")}async onEnable(){let e=await s.network.get("users/freeSpinner");s.stores.get("userState").user.balance.headcoins+=e.data.amount,h.modules.FreeHeadcoins.disable()}};var _=class extends a{constructor(){super("Fill","Misc",{Radius:4,"Block ID":652,"Chunk Interval":500}),this.lastExecutionTime=0}onRender(){if(!s?.gameWorld?.player)return;let e=this.options.Radius,t=this.options["Chunk Interval"],i=Date.now();if(i-this.lastExecutionTime>=t){this.lastExecutionTime=i;let o=Object.values(s.gameWorld.player.position).splice(0,3).map(Math.floor);for(let n=-e;n<=e;n++)for(let l=-e;l<=e;l++)for(let d=-e;d<=e;d++){let[u,g,f]=[o[0]+n,o[1]+l,o[2]+d];s.gameWorld.chunkManager.getBlock(u,g,f)==0&&s.gameWorld.chunkManager.setBlock(u,g,f,this.options["Block ID"],!0,!0)}}}};var D=class extends a{constructor(){super("Chams","Visual",null)}onRender(){s?.gameWorld?.player&&s.gameWorld.server.players.forEach(e=>{e.playerMaterial.depthTest=!1,e.playerMaterial.wireframe=!0})}onDisable(){s.gameWorld.server.players.forEach(e=>{e.playerMaterial.depthTest=!0,e.playerMaterial.wireframe=!1})}};var R=class extends a{constructor(){super("Scaffold","Movement",null)}onRender(){if(!s?.gameWorld?.player)return;let e=Object.values(s.gameWorld.player.position).splice(0,3).map(Math.floor);e[1]--;let t=s.gameWorld.player.currentInventoryItemId,i=s.gameWorld.chunkManager.getBlock(...e),o=s.gameWorld.items[i]?.replaceable||!1;(i==0||o)&&t&&s.gameWorld.chunkManager.setBlock(...e,t,!0,!0)}};var T=class extends a{constructor(){super("Killaura","Combat",{"Y Offset":1.62,Reach:5,Delay:100}),this.lastExecutionTime=null}onRender(){let e=Date.now();s?.gameWorld?.player&&e-this.lastExecutionTime>=this.options.Delay&&(this.lastExecutionTime=e,this.tryKill())}tryKill(){let e=this.options.Reach,t=this.options["Y Offset"],i=m.getClosestPlayer();var o={x:s.gameWorld.player.position.x,y:s.gameWorld.player.position.y+t,z:s.gameWorld.player.position.z},n=i._model.position,l={x:o.x-n.x,y:o.y-n.y,z:o.z-n.z},d=Math.sqrt(l.x*l.x+l.y*l.y+l.z*l.z);d!==0&&(l.x/=d,l.y/=d,l.z/=d),l.x=-l.x,l.y=-l.y,l.z=-l.z;var u=Math.sqrt(Math.pow(o.x-n.x,2)+Math.pow(o.y-n.y,2)+Math.pow(o.z-n.z,2));u<e&&s.gameWorld.server.sendData(13,[s.gameWorld.time.localServerTimeMs,o.x,o.y,o.z,l.x,l.y,l.z,u,i.id])}};var z=class extends a{constructor(){super("GunModifier","Combat",{Spread:.5,"Bullets per shot":100,"Firerate (ms)":1,"Bullet distance":1e3,"Reload Time":1,Recoil:!1})}get gunSystem(){return s.gameWorld.systemsManager.activeSystems.find(e=>e?.bulletsSystem)}onEnable(){let e=this.gunSystem.playerShooter.currPlayerWeaponSpec;e.bulletsPerShot=this.options["Bullets per shot"],e.firerateMs=this.options["Firerate (ms)"],e.distance=this.options["Bullet distance"],e.startSpread=this.options.Spread,e.reloadTimeMs=this.options["Reload Time"],this.options.Recoil||(e.recoilAttackY=0,e.recoilAttackY=0)}};var O=class extends a{constructor(){super("Aimbot","Combat",{"On Aim":"true","On Shoot":"true","Y Offset":.5}),this.lastExecutionTime=null}getClosestEnemy(e,t){let i=null,o=1/0;return t.forEach(n=>{if(n?.model?.position&&n.isAlive){let l=x.calculateDistance(e.position,n.model.position);l<o&&(o=l,i=n)}}),i}aimAtEnemy(){let e=s.gameWorld.player,t=s.gameWorld.server.players;if(!e||!t)return;let i=this.getClosestEnemy(e,t);if(i){let o=i.model.position,n=e.position,l={x:o.x-n.x,z:o.z-n.z},d=Math.atan2(l.x,l.z),u=parseFloat(this.options["Y Offset"]),g=o.y+u-n.y,f=Math.hypot(l.x,l.z),y=Math.atan2(g,f);y=Math.max(Math.min(y,Math.PI/2),-Math.PI/2);let b=(d+Math.PI)%(2*Math.PI);e.rotation.y=b,e.rotation.x=y}}onRender(){s?.gameWorld?.server&&(this.options["On Aim"]=="true"&&s.gameWorld.player.inputs.rightMB?this.aimAtEnemy():this.options["On Shoot"]=="true"&&s.gameWorld.player.inputs.leftMB?this.aimAtEnemy():this.options["On Shoot"]!=="true"&&this.options["On Aim"]!=="true"&&this.aimAtEnemy())}};var N=class extends a{constructor(){super("NoClip","Movement")}get playerPhysicsSystem(){return s.gameWorld.systemsManager.activeSystems.find(e=>e?.playerPhysicsSystem).playerPhysicsSystem}onRender(){s?.gameWorld?.player&&(this._og=this._og||this.playerPhysicsSystem.resolveBlockCollision,this.playerPhysicsSystem.resolveBlockCollision==this._og&&(this.playerPhysicsSystem.resolveBlockCollision=()=>{}))}onDisable(){this.playerPhysicsSystem.resolveBlockCollision=this._og}};var L=class extends a{constructor(){super("Timer","Movement",{Multiplier:1.2}),this.interval=null}onEnable(){this.interval&&clearInterval(this.interval),this.interval=setInterval(()=>{let e=s.gameWorld.time;e.elapsedTimeMs+=20*this.options.Multiplier},20)}onDisable(){this.interval&&clearInterval(this.interval)}};var U=class extends a{constructor(){super("HighJump","Movement",{"Jump Height":25})}onRender(){s.gameWorld.player.velocity.jumpSpeed=parseFloat(this.options["Jump Height"])}onDisable(){s.gameWorld.player.velocity.jumpSpeed=8.285714285714286}};var p={toServer:{TIME_STEP_INFO:1,REQUEST_RESPAWN:4,GOT_DAMAGE:27,PARKOUR_REQUEST_RESPAWN:1004,ONE_BLOCK_REQUEST_RESPAWN:1552,BED_WARS_REQUEST_RESPAWN:1600,SANDBOX_REQUEST_RESPAWN:1700},toClient:{SET_WALK_MODE:41,SET_INVISIBLE_MODE:42},listeners:{},packetListener(r,e){Object.values(this.listeners).forEach(t=>{let i=t(r,e);i!=null&&(e=i)}),s.gameWorld.server.msgsToSend.push(r,e)},init(){c.on("render",()=>{s?.gameWorld?.server?.sendData&&(s.gameWorld.server.sendData=this.packetListener.bind(this))})}};var H=class extends a{constructor(){super("NoHunger","Misc",null)}onEnable(){p.listeners.NoHunger=function(e,t){e==p.toServer.TIME_STEP_INFO&&(t.m&&delete t.m,t.s&&delete t.s,t.j&&delete t.j)}}onDisable(){delete p.listeners.NoHunger}};var V=class extends a{constructor(){super("NoDrown","Misc",null)}get damageListener(){return s.gameWorld.eventEmitter._events.get(48).values().next().value}onRender(){s?.gameWorld?.eventEmitter?._events&&this.damageListener.callback.toString().includes("damageToApply")&&(this.damageListener.callback=()=>{})}onDisable(){s?.gameWorld?.eventEmitter?._events&&(this.damageListener.callback=e=>{this.damageToApply+=e})}};var K=class extends a{constructor(){super("GroundSpeed","Movement",{Speed:15})}get playerPhysicsSystem(){return s.gameWorld.systemsManager.activeSystems.find(e=>e?.playerPhysicsSystem).playerPhysicsSystem}resetMovementSpeed(){s.gameWorld.player.velocity.moveSpeed=4.5,s.gameWorld.player.velocity.fastMoveSpeed=6.4}onRender(){s?.gameWorld?.player&&(s.gameWorld.player.collision.isGrounded?(s.gameWorld.player.velocity.moveSpeed=this.options.Speed,s.gameWorld.player.velocity.fastMoveSpeed=this.options.Speed):this.resetMovementSpeed())}onEnable(){let e=0,t=0;this.playerPhysicsSystem.BB.min.__defineGetter__("y",()=>e-.1),this.playerPhysicsSystem.BB.max.__defineGetter__("y",()=>t-.1),this.playerPhysicsSystem.BB.min.__defineSetter__("y",i=>{e=i}),this.playerPhysicsSystem.BB.max.__defineSetter__("y",i=>{t=i})}onDisable(){this.resetMovementSpeed(),delete this.playerPhysicsSystem.BB.min.y,delete this.playerPhysicsSystem.BB.max.y}};var F=class extends a{constructor(){super("InstantRespawn","Misc")}get gamemode(){return location.pathname.replace("/match/","")}onRender(){if(s.gameWorld?.player.isAlive)return;let e=!1;switch(this.gamemode){case"one-block":s.gameWorld.server.sendData(p.toServer.ONE_BLOCK_REQUEST_RESPAWN,!0),e=!0;case"parkour":s.gameWorld.server.sendData(p.toServer.PARKOUR_REQUEST_RESPAWN,!0),e=!0;case"bedwars":s.gameWorld.server.sendData(p.toServer.BED_WARS_REQUEST_RESPAWN,!0),e=!0;case"survival":s.gameWorld.server.sendData(p.toServer.SANDBOX_REQUEST_RESPAWN,!0),e=!0}e&&s.stores.get("gameState").setLayoutState(0)}};var j=class extends a{constructor(){super("ShopAnywhere","Misc")}get npcSystem(){return s?.gameWorld?.systemsManager?.activeSystems.find(e=>e?.isPlayerInShoppingZone)}onRender(){this?.npcSystem?.isPlayerInShoppingZone&&(this._og=this._og||this.npcSystem.isPlayerInShoppingZone,this.npcSystem.isPlayerInShoppingZone==this._og&&(this.npcSystem.isPlayerInShoppingZone=()=>!0))}onDisable(){this.npcSystem.isPlayerInShoppingZone=this._og}};var G=class extends a{constructor(){super("SelfHarm","Misc",{Amount:1})}onEnable(){s.gameWorld.server.msgsToSend.push(p.toServer.GOT_DAMAGE,parseFloat(this.options.Amount)),this.disable()}};var Y=class extends a{constructor(){super("BlockFinder","Misc",{"Search Radius":16,"Block ID":581}),this.CHUNK_SIZE=16,this.CHUNK_CHECK_MS=200,this.foundBlocks=[],this.lastChunkKey="",this.chunkInterval=null,this.raf=null,this.ui=null,this.listEl=null}getPlayerChunk(){let e=s.gameWorld.player.position;return[Math.floor(e.x/this.CHUNK_SIZE),Math.floor(e.y/this.CHUNK_SIZE),Math.floor(e.z/this.CHUNK_SIZE)]}createUI(){if(this.ui)return;let e=document.createElement("div");e.style.cssText=`
             position:fixed;
             top:80px;
             left:80px;
@@ -237,5 +237,5 @@
                 font-family:monospace;
                 white-space:pre;
             "></div>
-        `,document.body.appendChild(e),this.ui=e,this.listEl=e.querySelector(".bf-list");let t=!1,i=0,s=0,n=e.querySelector(".bf-head");n.onmousedown=l=>{t=!0,i=l.clientX-e.offsetLeft,s=l.clientY-e.offsetTop},document.addEventListener("mousemove",this._dragMove=l=>{t&&(e.style.left=l.clientX-i+"px",e.style.top=l.clientY-s+"px")}),document.addEventListener("mouseup",this._dragUp=()=>{t=!1})}destroyUI(){this.ui&&(this.ui.remove(),this.ui=null,this.listEl=null,document.removeEventListener("mousemove",this._dragMove),document.removeEventListener("mouseup",this._dragUp))}scanChunks(){let e=this.options["Search Radius"]|0,t=this.options["Block ID"]|0,i=o.gameWorld.chunkManager,s=this.getPlayerChunk();this.foundBlocks.length=0;for(let n=-e;n<=e;n++)for(let l=-e;l<=e;l++)for(let d=-e;d<=e;d++){let u=s[0]+n,y=s[1]+l,f=s[2]+d,g=i.getChunkArray(u,y,f);if(g)for(let b=0;b<g.length;b++){if(g[b]!==t)continue;let ie=(u<<4)+(b&15),re=(y<<4)+(b>>4&15),ne=(f<<4)+(b>>8);o.gameWorld.chunkManager.getBlock(ie,re,ne)===t&&this.foundBlocks.push([ie,re,ne])}}}renderDistances=()=>{if(!this.listEl)return;let e=[...o.gameWorld.player.position];this.foundBlocks.length===0?this.listEl.textContent="none nearby":this.listEl.textContent=this.foundBlocks.map(t=>({pos:t,d:x.calculateDistanceArr(e,t)})).sort((t,i)=>t.d-i.d).map(t=>`${t.pos[0]}, ${t.pos[1]}, ${t.pos[2]}  ${t.d.toFixed(1)}m`).join(`
-`),this.raf=requestAnimationFrame(this.renderDistances)};onEnable(){this.createUI(),this.scanChunks(),this.renderDistances(),this.chunkInterval=setInterval(()=>{let e=this.getPlayerChunk().join(",");e!==this.lastChunkKey&&(this.lastChunkKey=e,this.scanChunks())},this.CHUNK_CHECK_MS)}onDisable(){clearInterval(this.chunkInterval),cancelAnimationFrame(this.raf),this.chunkInterval=null,this.raf=null,this.foundBlocks.length=0,this.lastChunkKey="",this.destroyUI()}};var q=class extends a{constructor(){super("Spider","Movement",{Speed:5})}get playerPhysicsSystem(){return o.gameWorld.systemsManager.activeSystems.find(e=>e?.playerPhysicsSystem).playerPhysicsSystem}get upAgainstWall(){return this.playerPhysicsSystem.playerVelVec3.x==0||this.playerPhysicsSystem.playerVelVec3.z==0}onRender(){o?.gameWorld?.player&&o?.gameWorld?.player?.inputs.jump&&this.upAgainstWall&&(o.gameWorld.player.velocity.velVec3.y=this.options.Speed)}};var X=class extends a{constructor(){super("Freecam","Visual",{"3rd person":"true"}),this._copy=null,this.realPos=null}get playerModel(){return o.gameWorld.systemsManager.activeSystems.find(e=>e?.model).model}onEnable(){let e=o.gameWorld,t=0;e.player.cameraMode==1&&this.options["3rd person"]=="true"&&(o.gameWorld.switchCameraView(),t=100),o.gameWorld.server.msgsListeners[p.toClient.SET_INVISIBLE_MODE](),setTimeout(()=>{this._copy=this._copy||this.playerModel.position.copy,this.playerModel.position.copy=()=>{},this.realPos=this.playerModel.position},t)}onDisable(){o.gameWorld.server.msgsListeners[p.toClient.SET_WALK_MODE](),this.playerModel.position.copy=this._copy.bind(this.playerModel.position),this.playerModel.position=this.realPos}};var Z=class extends a{constructor(){super("AirPlace","Misc")}get blockPlaceSystem(){return o.gameWorld.systemsManager.activeSystems.find(e=>e?._handlePlaceInAir)}onEnable(){this.blockPlaceSystem.canPlaceBlocksInAir=!0}onDisable(){this.blockPlaceSystem.canPlaceBlocksInAir=o.gameWorld.player.gameMode==2}};var Q=class extends a{constructor(){super("Crafting","Menus")}onEnable(){m.openOtherItem(2),this.disable(),h.modules.ClickGUI.onDisable(!1)}};var $=class extends a{constructor(){super("DyeingTable","Menus")}onEnable(){m.openOtherItem(9),this.disable(),h.modules.ClickGUI.onDisable(!1)}};var J=class extends a{constructor(){super("CuttingTable","Menus")}onEnable(){m.openOtherItem(10),this.disable(),h.modules.ClickGUI.onDisable(!1)}};var ee=class extends a{constructor(){super("Xray","Visual",null)}getItemByName(e){return Object.values(o.gameWorld.items).find(t=>t.name==e)}blocksToXray=["Dirt","Cobblestone","Stone"];onEnable(){$assetsUrls["game/textures/blocksTextures/Transparent.png"]="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==",this.blocksToXray.forEach(e=>{let t=this.getItemByName(e);t&&(t.transparent=!0,t.textures={other:"Transparent"},t.lightRadius=15,t.lightRGB=[1,1,1])}),this.reloadLighting(),alert("Rejoin game to apply")}onDisable(){this.blocksToXray.forEach(e=>{let t=this.getItemByName(e);t&&(t.transparent=!1,t.textures={other:e},t.lightRadius=0,t.lightRGB=[0,0,0])}),this.reloadLighting()}reloadLighting(){o.gameWorld.chunkManager&&(o.gameWorld.chunkManager.lightConfig.byBlockId=[],o.gameWorld.chunkManager.lightConfig.reloadBlocks())}};var te=class extends a{constructor(){super("Interface","Visual",{"Hide Right Elements":!0,"Bottom Chat":!0})}getCssRule(e){for(let t of document.styleSheets)for(let i of t.cssRules||[])if(i.selectorText?.includes(e))return i}applyTweaks(e,t){let i=this.isEnabled,s=this.getCssRule("chat-wrapper"),n=this.getCssRule("key-prompt-wrapper");i&&this.options["Hide Right Elements"]?n.style.display="none":n.style.display="flex",i&&this.options["Bottom Chat"]?(s.style.bottom="10%",s.style.top="",s.style.position="fixed"):(s.style.bottom="",s.style.top="0",s.style.position="absolute")}onEnable(){this.applyTweaks()}onDisable(){this.applyTweaks()}};var oe=class extends a{constructor(){super("BlockOutline","Visual",{"Outline Color":"#81e1ff"})}get selectedBlock(){return o.gameWorld?.systemsManager.activeSystems.find(e=>e?.currBlockPos!==void 0)||void 0}onRender(){if(this?.selectedBlock?.mesh){let e=m.hexToRgb(this.options["Outline Color"]);this.selectedBlock.mesh.material.color.r!==e.r&&this.onEnable()}}onEnable(){let e=m.hexToRgb(this.options["Outline Color"]),t=this.selectedBlock.mesh;Object.keys(e).forEach(function(i){t.material.color[i]=e[i]})}onDisable(){this.selectedBlock.mesh.material.color.r=0,this.selectedBlock.mesh.material.color.g=0,this.selectedBlock.mesh.material.color.b=0}};var h={modules:{},addModules:function(...r){for(let e of r){let t=new e;this.modules[t.name]=t}},addModule:function(r){this.modules[r.name]=r},handleKeyPress:function(r){for(let e in this.modules){let t=this.modules[e];t.waitingForBind?(t.keybind=r,t.waitingForBind=!1):t.keybind==r&&t.toggle()}},init(){this.addModules(v,k,M,C,W,w,B,I,P,K,A,_,D,R,T,z,O,N,L,U,H,V,F,j,G,Y,q,X,Z,ee,te,oe,Q,$,J),c.on("render",()=>{for(let r in this.modules)this.modules[r].isEnabled&&this.modules[r].onRender()}),c.on("keydown",this.handleKeyPress.bind(this)),c.on("setting.update",()=>{for(let r in this.modules)this.modules[r].isEnabled&&this.modules[r].onSettingUpdate()}),this.modules.Arraylist.enable(),this.modules.Watermark.enable(),this.modules.Interface.enable()}};var se=class{constructor(){this.version="1.0.0",this.init()}init(){setInterval(()=>{c.emit("render")},1e3/60),document.addEventListener("keydown",e=>{c.emit("keydown",e.code)}),h.init(),p.init(),this.packets=p,this.moduleManager=h,this.hooks=o}disable(){}};function le(){window.minebuns=new se}document.readyState==="complete"||document.readyState==="interactive"?le():document.addEventListener("DOMContentLoaded",()=>{setTimeout(le,1e3)});})();
+        `,document.body.appendChild(e),this.ui=e,this.listEl=e.querySelector(".bf-list");let t=!1,i=0,o=0,n=e.querySelector(".bf-head");n.onmousedown=l=>{t=!0,i=l.clientX-e.offsetLeft,o=l.clientY-e.offsetTop},document.addEventListener("mousemove",this._dragMove=l=>{t&&(e.style.left=l.clientX-i+"px",e.style.top=l.clientY-o+"px")}),document.addEventListener("mouseup",this._dragUp=()=>{t=!1})}destroyUI(){this.ui&&(this.ui.remove(),this.ui=null,this.listEl=null,document.removeEventListener("mousemove",this._dragMove),document.removeEventListener("mouseup",this._dragUp))}scanChunks(){let e=this.options["Search Radius"]|0,t=this.options["Block ID"]|0,i=s.gameWorld.chunkManager,o=this.getPlayerChunk();this.foundBlocks.length=0;for(let n=-e;n<=e;n++)for(let l=-e;l<=e;l++)for(let d=-e;d<=e;d++){let u=o[0]+n,g=o[1]+l,f=o[2]+d,y=i.getChunkArray(u,g,f);if(y)for(let b=0;b<y.length;b++){if(y[b]!==t)continue;let ie=(u<<4)+(b&15),re=(g<<4)+(b>>4&15),ne=(f<<4)+(b>>8);s.gameWorld.chunkManager.getBlock(ie,re,ne)===t&&this.foundBlocks.push([ie,re,ne])}}}renderDistances=()=>{if(!this.listEl)return;let e=[...s.gameWorld.player.position];this.foundBlocks.length===0?this.listEl.textContent="none nearby":this.listEl.textContent=this.foundBlocks.map(t=>({pos:t,d:x.calculateDistanceArr(e,t)})).sort((t,i)=>t.d-i.d).map(t=>`${t.pos[0]}, ${t.pos[1]}, ${t.pos[2]}  ${t.d.toFixed(1)}m`).join(`
+`),this.raf=requestAnimationFrame(this.renderDistances)};onEnable(){this.createUI(),this.scanChunks(),this.renderDistances(),this.chunkInterval=setInterval(()=>{let e=this.getPlayerChunk().join(",");e!==this.lastChunkKey&&(this.lastChunkKey=e,this.scanChunks())},this.CHUNK_CHECK_MS)}onDisable(){clearInterval(this.chunkInterval),cancelAnimationFrame(this.raf),this.chunkInterval=null,this.raf=null,this.foundBlocks.length=0,this.lastChunkKey="",this.destroyUI()}};var q=class extends a{constructor(){super("Spider","Movement",{Speed:5})}get playerPhysicsSystem(){return s.gameWorld.systemsManager.activeSystems.find(e=>e?.playerPhysicsSystem).playerPhysicsSystem}get upAgainstWall(){return this.playerPhysicsSystem.playerVelVec3.x==0||this.playerPhysicsSystem.playerVelVec3.z==0}onRender(){s?.gameWorld?.player&&s?.gameWorld?.player?.inputs.jump&&this.upAgainstWall&&(s.gameWorld.player.velocity.velVec3.y=this.options.Speed)}};var X=class extends a{constructor(){super("Freecam","Visual",{"3rd person":"true"}),this._copy=null,this.realPos=null}get playerModel(){return s.gameWorld.systemsManager.activeSystems.find(e=>e?.model).model}onEnable(){let e=s.gameWorld,t=0;e.player.cameraMode==1&&this.options["3rd person"]=="true"&&(s.gameWorld.switchCameraView(),t=100),s.gameWorld.server.msgsListeners[p.toClient.SET_INVISIBLE_MODE](),setTimeout(()=>{this._copy=this._copy||this.playerModel.position.copy,this.playerModel.position.copy=()=>{},this.realPos=this.playerModel.position},t)}onDisable(){s.gameWorld.server.msgsListeners[p.toClient.SET_WALK_MODE](),this.playerModel.position.copy=this._copy.bind(this.playerModel.position),this.playerModel.position=this.realPos}};var Q=class extends a{constructor(){super("AirPlace","Misc")}get blockPlaceSystem(){return s.gameWorld.systemsManager.activeSystems.find(e=>e?._handlePlaceInAir)}onEnable(){this.blockPlaceSystem.canPlaceBlocksInAir=!0}onDisable(){this.blockPlaceSystem.canPlaceBlocksInAir=s.gameWorld.player.gameMode==2}};var Z=class extends a{constructor(){super("Crafting","Menus")}onEnable(){m.openOtherItem(2),this.disable(),h.modules.ClickGUI.onDisable(!1)}};var $=class extends a{constructor(){super("DyeingTable","Menus")}onEnable(){m.openOtherItem(9),this.disable(),h.modules.ClickGUI.onDisable(!1)}};var J=class extends a{constructor(){super("CuttingTable","Menus")}onEnable(){m.openOtherItem(10),this.disable(),h.modules.ClickGUI.onDisable(!1)}};var ee=class extends a{constructor(){super("Xray","Visual",null)}getItemByName(e){return Object.values(s.gameWorld.items).find(t=>t.name==e)}blocksToXray=["Dirt","Cobblestone","Stone"];onEnable(){$assetsUrls["game/textures/blocksTextures/Transparent.png"]="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==",this.blocksToXray.forEach(e=>{let t=this.getItemByName(e);t&&(t.transparent=!0,t.textures={other:"Transparent"},t.lightRadius=15,t.lightRGB=[1,1,1])}),this.reloadLighting(),alert("Rejoin game to apply")}onDisable(){this.blocksToXray.forEach(e=>{let t=this.getItemByName(e);t&&(t.transparent=!1,t.textures={other:e},t.lightRadius=0,t.lightRGB=[0,0,0])}),this.reloadLighting()}reloadLighting(){s.gameWorld.chunkManager&&(s.gameWorld.chunkManager.lightConfig.byBlockId=[],s.gameWorld.chunkManager.lightConfig.reloadBlocks())}};var te=class extends a{constructor(){super("Interface","Visual",{"Hide Right Elements":!0,"Bottom Chat":!0})}getCssRule(e){for(let t of document.styleSheets)for(let i of t.cssRules||[])if(i.selectorText?.includes(e))return i}applyTweaks(e,t){let i=this.isEnabled,o=this.getCssRule("chat-wrapper"),n=this.getCssRule("key-prompt-wrapper");i&&this.options["Hide Right Elements"]?n.style.display="none":n.style.display="flex",i&&this.options["Bottom Chat"]?(o.style.bottom="10%",o.style.top="",o.style.position="fixed"):(o.style.bottom="",o.style.top="0",o.style.position="absolute")}onEnable(){this.applyTweaks()}onDisable(){this.applyTweaks()}};var oe=class extends a{constructor(){super("BlockOutline","Visual",{"Outline Color":"#81e1ff"})}get selectedBlock(){return s.gameWorld?.systemsManager.activeSystems.find(e=>e?.currBlockPos!==void 0)||void 0}onRender(){if(this?.selectedBlock?.mesh){let e=m.hexToRgb(this.options["Outline Color"]);this.selectedBlock.mesh.material.color.r!==e.r&&this.onEnable()}}onEnable(){let e=m.hexToRgb(this.options["Outline Color"]),t=this.selectedBlock.mesh;Object.keys(e).forEach(function(i){t.material.color[i]=e[i]})}onDisable(){this.selectedBlock.mesh.material.color.r=0,this.selectedBlock.mesh.material.color.g=0,this.selectedBlock.mesh.material.color.b=0}};var h={modules:{},addModules:function(...r){for(let e of r){let t=new e;this.modules[t.name]=t}},addModule:function(r){this.modules[r.name]=r},handleKeyPress:function(r){for(let e in this.modules){let t=this.modules[e];t.waitingForBind?(t.keybind=r,t.waitingForBind=!1):t.keybind==r&&t.toggle()}},setCookie:function(r,e,t){let i="";if(t){let o=new Date;o.setTime(o.getTime()+t*24*60*60*1e3),i="; expires="+o.toUTCString()}document.cookie=r+"="+(JSON.stringify(e)||"")+i+"; path=/"},getCookie:function(r){let e=r+"=",t=document.cookie.split(";");for(let i=0;i<t.length;i++){let o=t[i];for(;o.charAt(0)==" ";)o=o.substring(1,o.length);if(o.indexOf(e)==0)return JSON.parse(o.substring(e.length,o.length))}return null},saveStates:function(){let r={};for(let e in this.modules)r[e]={enabled:this.modules[e].isEnabled,key:this.modules[e].keybind};this.setCookie("client_config",r,30)},loadStates:function(){let r=this.getCookie("client_config");if(r)for(let e in r)this.modules[e]&&(this.modules[e].keybind=r[e].key,r[e].enabled&&this.modules[e].enable())},init(){this.addModules(v,k,M,C,W,w,B,I,P,K,A,_,D,R,T,z,O,N,L,U,H,V,F,j,G,Y,q,X,Q,ee,te,oe,Z,$,J),c.on("render",()=>{for(let r in this.modules)this.modules[r].isEnabled&&this.modules[r].onRender();this.saveStates()}),c.on("keydown",this.handleKeyPress.bind(this)),c.on("setting.update",()=>{for(let r in this.modules)this.modules[r].isEnabled&&this.modules[r].onSettingUpdate()}),this.loadStates(),this.modules.AdBypass.enable(),this.modules.Interface.enable()}};var se=class{constructor(){this.version="1.0.0",this.init()}init(){setInterval(()=>{c.emit("render")},1e3/60),document.addEventListener("keydown",e=>{c.emit("keydown",e.code)}),h.init(),p.init(),this.packets=p,this.moduleManager=h,this.hooks=s}disable(){}};function le(){window.minebuns=new se}document.readyState==="complete"||document.readyState==="interactive"?le():document.addEventListener("DOMContentLoaded",()=>{setTimeout(le,1e3)});})();
