@@ -155,6 +155,7 @@ loadStates: function () {
                     this.modules[name].onRender();
                 }
             }
+            this.saveStates();
         });
 
         events.on("keydown", this.handleKeyPress.bind(this));
