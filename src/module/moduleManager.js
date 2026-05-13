@@ -62,6 +62,53 @@ export default {
         }
     },
 
+setCookie: function (name, value, days) {
+    let expires = "";
+    if (days) {
+        let date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (JSON.stringify(value) || "") + expires + "; path=/";
+},
+
+getCookie: function (name) {
+    let nameEQ = name + "=";
+    let ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return JSON.parse(c.substring(nameEQ.length, c.length));
+    }
+    return null;
+},
+
+saveStates: function () {
+    const states = {};
+    for (let name in this.modules) {
+        states[name] = {
+            enabled: this.modules[name].isEnabled,
+            key: this.modules[name].keybind
+        };
+    }
+    this.setCookie("client_config", states, 30);
+},
+
+loadStates: function () {
+    const states = this.getCookie("client_config");
+    if (!states) return;
+
+    for (let name in states) {
+        if (this.modules[name]) {
+            this.modules[name].keybind = states[name].key;
+            if (states[name].enabled) {
+                this.modules[name].enable();
+            }
+        }
+    }
+}
+
+
     init () {
         this.addModules(
             ArrayList,
@@ -118,10 +165,8 @@ export default {
                 }
             }
         });
-
-        
-        this.modules["Arraylist"].enable();
-        this.modules["Watermark"].enable();
+        this.loadStates();
+        this.modules["AdBypass"].enable();
         this.modules["Interface"].enable();
     }
 };
