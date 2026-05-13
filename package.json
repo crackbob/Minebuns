@@ -7,7 +7,7 @@
 		"build": "node build.js",
 		"watch": "node build.js --watch"
 	},
-	"dependencies": {
+	"devDependencies": {
 		"esbuild": "^0.28.0"
 	}
 }

@@ -106,7 +106,7 @@ loadStates: function () {
             }
         }
     }
-}
+},
 
 
     init () {
